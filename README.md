@@ -2,13 +2,12 @@
 
 A modern, responsive, and visually appealing landing page for a coffee shop. This project is part of my web development portfolio supervised by Dibimbing.id Bootcamp, focusing on clean UI/UX and performance.
 
-![Thumbnail Preview](https://via.placeholder.com/800x400?text=Preview+Image+Cafe+Landing+Page)
+![Thumbnail Preview](https://placehold.co/800x400?text=Coffee+Web+App)
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Frontend:** [Next.js 16](https://nextjs.org/) (Pages Router)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Deployment:** [Vercel](https://vercel.com/)
 - **Optimization:** React Compiler (Experimental) for automatic memoization.
 
 ## 📦 Installation & Setup
@@ -18,7 +17,7 @@ Follow these steps to run the project locally:
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/apifsprd/coffee-shop-web.git](https://github.com/apifsprd/coffee-shop-web.git)
+    git clone https://github.com/apifsprd/coffee-shop-web.git
     ```
 
 2.  **Navigate to the project directory:**
@@ -53,8 +52,8 @@ This project implements the new **React Compiler** (introduced in Next.js 16).
 
 Created by **Apif Supriadi** \* Email: [apifsupriadi27@gmail.com]
 
-- LinkedIn: [linkedin.com/in/apifsprd]
-- Portfolio: [apifsprd.web.id]
+- LinkedIn: [https://linkedin.com/in/apifsprd]
+- Portfolio: [https://apifsprd.web.id]
 
 ---
 
