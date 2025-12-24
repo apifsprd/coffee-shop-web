@@ -4,16 +4,6 @@ A modern, responsive, and visually appealing landing page for a coffee shop. Thi
 
 ![Thumbnail Preview](https://placehold.co/800x400?text=Coffee+Web+App)
 
-## 
-
-## 🛠️ Tech Stack
-
-- **Frontend:** [Next.js 16](https://nextjs.org/) (Pages Router)# ☕ Indo Coffee & Co. - Cafe Web App
-
-A modern, responsive, and visually appealing landing page for a coffee shop. This project is part of my web development portfolio supervised by **Dibimbing.id Bootcamp**, focusing on clean UI/UX and performance.
-
-![Thumbnail Preview](https://placehold.co/800x400?text=Coffee+Web+App)
-
 ## 🎨 Design Reference
 
 The visual design and layout of this project are inspired by several modern coffee shop website concepts:
