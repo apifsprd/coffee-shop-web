@@ -9,7 +9,7 @@ A modern, responsive, and visually appealing landing page for a coffee shop. Thi
 The visual design and layout of this project are inspired by several modern coffee shop website concepts:
 
 - Dribbble – Coffee Shop Landing Page Inspirations:  
-  [https://dribbble.com/tags/coffee_shop_website](https://dribbble.com/shots/26431247-Coffee-Shop-Website-Design?utm_source=Clipboard_Shot&utm_campaign=sharifulgr&utm_content=Coffee%20Shop%20Website%20Design&utm_medium=Social_Share&utm_source=Clipboard_Shot&utm_campaign=sharifulgr&utm_content=Coffee%20Shop%20Website%20Design&utm_medium=Social_Share)
+  [Coffee Shop Website Design by Sharifulgr for Ovious.Studio](https://dribbble.com/shots/26431247-Coffee-Shop-Website-Design)
 
 > ⚠️ This project is created for **learning and portfolio purposes only**.  
 > All designs are **re-implemented from scratch**, not directly copied.
