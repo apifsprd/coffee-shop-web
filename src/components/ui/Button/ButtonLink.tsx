@@ -3,13 +3,16 @@ import Link from "next/link";
 interface ButtonLinkProps {
   href: string;
   title: string;
+  isBold?: boolean;
 }
 
-const ButtonLink = ({ href, title }: ButtonLinkProps) => (
+const ButtonLink = ({ href, title, isBold = true }: ButtonLinkProps) => (
   <Link
     href={href}
     // Tambahkan class 'group' untuk mengontrol elemen di dalamnya saat di-hover
-    className="relative inline-block font-semibold group"
+    className={`relative inline-block text-base ${
+      isBold ? "font-bold" : ""
+    } group`}
   >
     {title}
 

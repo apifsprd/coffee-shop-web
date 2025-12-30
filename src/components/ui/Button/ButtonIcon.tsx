@@ -1,18 +1,28 @@
 import React from "react";
 
-interface ButtonBaseProps {
+interface ButtonIconProps {
+  icon: React.ReactNode;
+  iconOnly?: boolean;
+  iconPosition?: "left" | "right";
   eventClick?: () => void;
   label?: string;
   variant?: string;
 }
 
-function ButtonBase({
+function ButtonIcon({
+  icon,
+  iconOnly = false,
+  iconPosition = "left",
   eventClick,
   label,
   variant = "primary",
-}: ButtonBaseProps) {
-  const baseStyle =
+}: ButtonIconProps) {
+  let baseStyle =
     "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit cursor-pointer";
+
+  if (iconPosition === "left") {
+    baseStyle += " flex-row-reverse";
+  }
 
   switch (variant) {
     case "primary":
@@ -21,16 +31,8 @@ function ButtonBase({
           className={`${baseStyle} bg-black text-white`}
           onClick={eventClick}
         >
-          {label}
-        </button>
-      );
-    case "secondary":
-      return (
-        <button
-          className={`${baseStyle} bg-white text-black`}
-          onClick={eventClick}
-        >
-          {label}
+          {!iconOnly && label}
+          {icon}
         </button>
       );
     case "outline":
@@ -39,10 +41,11 @@ function ButtonBase({
           className={`${baseStyle} border border-black text-black`}
           onClick={eventClick}
         >
-          {label}
+          {!iconOnly && label}
+          {icon}
         </button>
       );
   }
 }
 
-export default ButtonBase;
+export default ButtonIcon;
