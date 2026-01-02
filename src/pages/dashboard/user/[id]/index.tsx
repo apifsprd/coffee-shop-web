@@ -23,6 +23,7 @@ function Index({ token }: UserPageProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.title = "Indo Cafe n Resto | Profile";
     const getData = async () => {
       try {
         const response = await api.getUser(Number(router.query.id), token);
@@ -39,6 +40,7 @@ function Index({ token }: UserPageProps) {
 
   return (
     <DashboardLayout>
+      <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
       <div className="flex flex-col gap-4 p-4 rounded-2xl bg-white border border-gray-200">
         {!loading ? (
           <div className="flex flex-col gap-4 items-center">

@@ -20,7 +20,7 @@ function ButtonIcon({
   isDisabled = false,
 }: ButtonIconProps) {
   let baseStyle =
-    "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit ";
+    "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit hover:opacity-60 transition duration-300 ease-in-out";
 
   if (iconPosition === "left") {
     baseStyle += " flex-row-reverse";

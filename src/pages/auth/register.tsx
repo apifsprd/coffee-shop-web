@@ -4,7 +4,7 @@ import { TextInput } from "@/components/ui/form";
 import { api } from "@/lib/api";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 function Register() {
   const router = useRouter();
@@ -40,6 +40,10 @@ function Register() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "Indo Cafe n Resto | Register";
+  }, []);
 
   return (
     <AuthLayout>

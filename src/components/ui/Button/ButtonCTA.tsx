@@ -10,7 +10,7 @@ interface ButtonCTAProps {
 
 function ButtonCTA({ href, label, variant = "primary" }: ButtonCTAProps) {
   const baseStyle =
-    "flex flex-row items-center gap-4 pl-4 pr-1 py-1 rounded-full w-fit";
+    "flex flex-row items-center gap-4 pl-4 pr-1 py-1 rounded-full w-fit cursor-pointer hover:opacity-60 transition duration-300 ease-in-out";
 
   switch (variant) {
     case "primary":

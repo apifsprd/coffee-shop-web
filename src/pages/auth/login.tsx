@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { checkGuest } from "@/lib/auth";
@@ -39,6 +39,10 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "Indo Cafe n Resto | Login";
+  }, []);
 
   return (
     <AuthLayout>
