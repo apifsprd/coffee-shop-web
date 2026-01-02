@@ -4,6 +4,14 @@ A modern, responsive, and visually appealing landing page for a coffee shop. Thi
 
 ![Thumbnail Preview](public/images/screenshot.png)
 
+## 🚀 Features
+
+- ✅ User Login
+- ✅ User Registration
+- ✅ API Integration using Reqres.in
+- ✅ Error handling (invalid credentials)
+- ✅ Loading & success state handling
+
 ## 🎨 Design Reference
 
 The visual design and layout of this project are inspired by several modern coffee shop website concepts:
@@ -18,6 +26,7 @@ The visual design and layout of this project are inspired by several modern coff
 
 - **Frontend:** [Next.js 16](https://nextjs.org/) (Pages Router)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **API**: [Reqres.in](https://reqres.in)
 
 ## 🛠️ Library
 
