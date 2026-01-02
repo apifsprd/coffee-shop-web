@@ -11,8 +11,6 @@ The visual design and layout of this project are inspired by several modern coff
 - Dribbble – Coffee Shop Landing Page Inspirations:  
   [Coffee Shop Website Design by Sharifulgr for Ovious.Studio](https://dribbble.com/shots/26431247-Coffee-Shop-Website-Design)
 
-![Thumbnail Reference Design](public/images/reference-design.png)
-
 > ⚠️ This project is created for **learning and portfolio purposes only**.  
 > All designs are **re-implemented from scratch**, not directly copied.
 
