@@ -26,7 +26,8 @@ The visual design and layout of this project are inspired by several modern coff
 
 - **Frontend:** [Next.js 16](https://nextjs.org/) (Pages Router)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **API**: [Reqres.in](https://reqres.in)
+- **API:** [Reqres.in](https://reqres.in)
+- **Deploy:** [Vercel](http://vercel.com/)
 
 ## 🛠️ Library
 
