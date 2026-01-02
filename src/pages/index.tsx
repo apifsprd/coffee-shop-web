@@ -127,7 +127,7 @@ export default function Home() {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="hidden lg:flex items-center gap-8">
+          <ul className="hidden lg:flex items-center gap-8 lg:gap-16">
             <li>
               <ButtonLink href="#" title="Home" />
             </li>
@@ -195,7 +195,11 @@ export default function Home() {
             </ul>
 
             <div className="mt-4">
-              <ButtonCTA href="#" label="Reserve Room" variant="primary" />
+              <ButtonCTA
+                href="/dashboard"
+                label="Reserve Room"
+                variant="primary"
+              />
             </div>
           </div>
         </div>

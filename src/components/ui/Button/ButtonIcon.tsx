@@ -7,6 +7,7 @@ interface ButtonIconProps {
   eventClick?: () => void;
   label?: string;
   variant?: string;
+  isDisabled?: boolean;
 }
 
 function ButtonIcon({
@@ -16,12 +17,19 @@ function ButtonIcon({
   eventClick,
   label,
   variant = "primary",
+  isDisabled = false,
 }: ButtonIconProps) {
   let baseStyle =
-    "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit cursor-pointer";
+    "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit ";
 
   if (iconPosition === "left") {
     baseStyle += " flex-row-reverse";
+  }
+
+  if (isDisabled) {
+    baseStyle += " opacity-50 cursor-not-allowed";
+  } else {
+    baseStyle += " cursor-pointer";
   }
 
   switch (variant) {
@@ -30,6 +38,7 @@ function ButtonIcon({
         <button
           className={`${baseStyle} bg-black text-white`}
           onClick={eventClick}
+          disabled={isDisabled}
         >
           {!iconOnly && label}
           {icon}
@@ -40,6 +49,7 @@ function ButtonIcon({
         <button
           className={`${baseStyle} border border-black text-black`}
           onClick={eventClick}
+          disabled={isDisabled}
         >
           {!iconOnly && label}
           {icon}

@@ -17,20 +17,7 @@ const ButtonLink = ({ href, title, isBold = true }: ButtonLinkProps) => (
     {title}
 
     {/* Elemen Garis Bawah (Underline) */}
-    <span
-      className="
-      absolute 
-      bottom-0 
-      left-0 
-      h-0.5             
-      w-0                 
-      bg-current          
-      transition-all      
-      duration-300        
-      ease-out
-      group-hover:w-full  
-    "
-    />
+    <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-current transition-all duration-300 ease-out group-hover:w-full" />
   </Link>
 );
 

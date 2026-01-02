@@ -20,8 +20,9 @@ function PaginationBase({
       <ButtonIcon
         icon={<ArrowLeft size={20} />}
         iconOnly
-        eventClick={() => eventNext}
+        eventClick={eventPrev}
         variant={currentPage === 1 ? "outline" : "primary"}
+        isDisabled={currentPage === 1}
       />
       <div>
         <p className="text-base">
@@ -31,8 +32,9 @@ function PaginationBase({
       <ButtonIcon
         icon={<ArrowRight size={20} />}
         iconOnly
-        eventClick={() => eventPrev}
+        eventClick={eventNext}
         variant={currentPage === totalPages ? "outline" : "primary"}
+        isDisabled={currentPage === totalPages}
       />
     </div>
   );
