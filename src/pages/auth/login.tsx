@@ -1,16 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
-import { checkGuest } from "@/lib/auth";
 import { ButtonBase, ButtonLink } from "@/components/ui/Button";
 import { api } from "@/lib/api";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { TextInput } from "@/components/ui/form";
 import Image from "next/image";
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return checkGuest(context);
-};
 
 export default function Login() {
   const router = useRouter();

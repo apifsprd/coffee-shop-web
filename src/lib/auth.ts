@@ -26,24 +26,3 @@ export function checkAuth(
     },
   };
 }
-
-// Menggunakan object (lowercase)
-export function checkGuest(
-  context: GetServerSidePropsContext
-): GetServerSidePropsResult<object> {
-  const { req } = context;
-  const token = req.cookies.token;
-
-  if (token) {
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-}
