@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonBase, ButtonLink } from "../ui/Button";
 import Image from "next/image";
+import { checkToken } from "@/lib/auth";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   const handleLogout = () => {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    localStorage.removeItem("token");
     window.location.href = "/";
   };
+
+  const checkAuth = () => {
+    const token = checkToken();
+    if (!token.auth) {
+      window.location.href = "/auth/login";
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

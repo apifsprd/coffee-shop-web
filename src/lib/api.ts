@@ -46,7 +46,9 @@ export const api = {
     return response.json();
   },
 
-  async getUser(userId: number, token: string) {
+  async getUser(userId: number) {
+    const token = localStorage.getItem("token");
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_NAME}/users/${userId}`,
       {
@@ -64,7 +66,8 @@ export const api = {
     return response.json();
   },
 
-  async getUsers(page: number, per_page: number, token: string) {
+  async getUsers(page: number, per_page: number) {
+    const token = localStorage.getItem("token");
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_NAME}/users?page=${page}&per_page=${per_page}`,
       {

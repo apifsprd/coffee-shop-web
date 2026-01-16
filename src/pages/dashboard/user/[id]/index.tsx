@@ -1,23 +1,11 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { api } from "@/lib/api";
-import { checkAuth } from "@/lib/auth";
 import { User } from "@/types/auth";
-import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-interface UserPageProps {
-  token: string;
-}
-
-export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
-  context
-) => {
-  return checkAuth(context);
-};
-
-function Index({ token }: UserPageProps) {
+function Index() {
   const router = useRouter();
   const [data, setData] = useState<User>();
   const [loading, setLoading] = useState(true);
@@ -26,8 +14,8 @@ function Index({ token }: UserPageProps) {
     document.title = "Indo Cafe n Resto | Profile";
     const getData = async () => {
       try {
-        const response = await api.getUser(Number(router.query.id), token);
-        setData(response.data);
+        // // const response = await api.getUser(Number(router.query.id), token);
+        // setData(response.data);
       } catch (error) {
         console.error("Failed to fetch user:", error);
       } finally {
@@ -36,7 +24,7 @@ function Index({ token }: UserPageProps) {
     };
 
     getData();
-  }, [token, router.query.id]);
+  }, [router.query.id]);
 
   return (
     <DashboardLayout>

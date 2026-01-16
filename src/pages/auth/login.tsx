@@ -21,7 +21,7 @@ export default function Login() {
     try {
       const response = await api.login(email, password);
       const { token } = response;
-      document.cookie = `token=${token}; path=/;`;
+      localStorage.setItem("token", token);
       router.push("/dashboard");
     } catch (err) {
       const message =

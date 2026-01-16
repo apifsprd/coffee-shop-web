@@ -1,6 +1,4 @@
-import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import { checkAuth } from "@/lib/auth";
 import { User } from "@/types/auth";
 import Link from "next/link";
 import { api } from "@/lib/api";
@@ -8,17 +6,7 @@ import { PaginationBase } from "@/components/ui/pagination";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import Image from "next/image";
 
-interface DashboardProps {
-  token: string;
-}
-
-export const getServerSideProps: GetServerSideProps<DashboardProps> = async (
-  context
-) => {
-  return checkAuth(context);
-};
-
-export default function Dashboard({ token }: DashboardProps) {
+export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingList, setLoadingList] = useState(false);
@@ -30,14 +18,14 @@ export default function Dashboard({ token }: DashboardProps) {
   });
 
   useEffect(() => {
-    fetchUser();
-    fetchUsers(pagination.page, 6, token);
     document.title = "Indo Cafe n Resto | Dashboard";
-  }, [pagination.page, token]);
+    fetchUser();
+    fetchUsers(pagination.page, 6);
+  }, [pagination.page]);
 
   const fetchUser = async () => {
     try {
-      const response = await api.getUser(4, token);
+      const response = await api.getUser(4);
       setUser(response.data);
     } catch (error) {
       console.error("Failed to fetch user:", error);
@@ -48,10 +36,10 @@ export default function Dashboard({ token }: DashboardProps) {
     }
   };
 
-  const fetchUsers = async (page: number, per_page: number, token: string) => {
+  const fetchUsers = async (page: number, per_page: number) => {
     try {
       setLoadingList(true);
-      const response = await api.getUsers(page, per_page, token);
+      const response = await api.getUsers(page, per_page);
 
       setPagination({
         page: response.page,
