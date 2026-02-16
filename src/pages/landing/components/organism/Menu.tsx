@@ -29,7 +29,7 @@ const DUMMY_MENU = [
       "https://images.unsplash.com/photo-1645453014906-7f2874408d8d?q=80&w=926&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    title: "Main Course & Snack",
+    title: "Main Course",
     description:
       "Main Course is a variety of dishes that will satisfy your hunger and cravings. From classic comfort food to modern twists, our menu is designed to provide something for everyone.",
     price: "Rp.30.000-Rp.200.000",

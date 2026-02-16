@@ -1,6 +1,7 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { ButtonBase, ButtonLink } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/form";
+import { register } from "@/lib/api-list/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 function Register() {
   const router = useRouter();
 
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -25,16 +27,20 @@ function Register() {
     }
 
     try {
-      // const response = await api.register(email, password);
-      // const { token } = response;
-      // document.cookie = `token=${token}; path=/;`;
-      // router.push("/dashboard");
+      const response = await register({
+        name,
+        email,
+        password,
+        passwordRepeat: confirmPassword,
+        role: "user",
+      });
+      if (response.code === "200") {
+        router.push("/auth/login");
+      } else {
+        setError(response.message || response?.errors[0]?.message);
+      }
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "An error occurred. Please try again.";
-      setError(`Failed to login: ${message}`);
+      setError(`Failed to login: ${err}`);
     } finally {
       setLoading(false);
     }
@@ -65,14 +71,22 @@ function Register() {
               {error}
             </div>
           )}
-
+          <TextInput
+            label="Fullname"
+            InputType="text"
+            inputValue={name}
+            inputOnChange={(e) => setName(e.target.value)}
+            inputPlaceholder="John Doe"
+            // helperText="Username : eve.holt@reqres.in"
+            mandatory={true}
+          />
           <TextInput
             label="Email"
             InputType="email"
             inputValue={email}
             inputOnChange={(e) => setEmail(e.target.value)}
-            inputPlaceholder="eve.holt@reqres.in"
-            helperText="Username : eve.holt@reqres.in"
+            inputPlaceholder="john.doe@example.com"
+            // helperText="Username : eve.holt@reqres.in"
             mandatory={true}
           />
           <TextInput
@@ -89,11 +103,11 @@ function Register() {
             inputValue={confirmPassword}
             inputOnChange={(e) => setConfirmPassword(e.target.value)}
             inputPlaceholder="*********"
-            helperText="Password : cityslicka"
+            // helperText="Password : cityslicka"
             mandatory={true}
           />
 
-          <div className="w-full mt-4">
+          <div className="w-full mt-12">
             <ButtonBase
               type="submit"
               disabled={loading}

@@ -53,9 +53,6 @@ export default function Benefit() {
             </div>
           ))}
         </div>
-        <div className="mt-6 md:mt-10">
-          <ButtonCTA href="#" label="View Memberships" variant="secondary" />
-        </div>
       </div>
     </section>
   );
