@@ -19,6 +19,7 @@ export default function Login() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const now = new Date().getTime();
     setError("");
     setLoading(true);
 
@@ -29,6 +30,7 @@ export default function Login() {
           setCredentials({ user: response.user, token: response.token }),
         );
         localStorage.setItem("token", response.token);
+        localStorage.setItem("login_timestamp", now.toString());
         router.push("/dashboard");
       } else {
         setError(response.message);
@@ -76,7 +78,6 @@ export default function Login() {
             inputValue={email}
             inputOnChange={(e) => setEmail(e.target.value)}
             inputPlaceholder="eve.holt@reqres.in"
-            helperText="Username : eve.holt@reqres.in"
             mandatory={true}
           />
           <TextInput
@@ -85,7 +86,6 @@ export default function Login() {
             inputValue={password}
             inputOnChange={(e) => setPassword(e.target.value)}
             inputPlaceholder="cityslicka"
-            helperText="Password : cityslicka"
             mandatory={true}
           />
 

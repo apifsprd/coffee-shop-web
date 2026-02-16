@@ -5,44 +5,36 @@ import React from "react";
 
 const DUMMY_MENU = [
   {
-    title: "Iced Coffee Latte",
+    title: "Coffee",
     description:
-      "Our iced coffee latte is made with high-quality coffee beans and fresh milk. It's a perfect drink to start your day or to pick you up in the afternoon.",
-    price: "Rp. 20.000",
+      "It's a perfect drink to start your day or to pick you up in the afternoon.",
+    price: "Rp. 20.000-Rp.50.000",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_qq_aUgY1uWxEkujugXcWr8y5CX04-U0SYy1SD9DddICp1blcHwpDow64mEH0",
   },
   {
-    title: "Strawberry Matcha Latte",
+    title: "Tea",
     description:
-      "A refreshing and sweet drink made with high-quality matcha powder and fresh milk. Perfect for those who love the taste of green tea.",
-    price: "Rp. 20.000",
+      "Refreshing green tea drink made with high-quality matcha powder and fresh milk.",
+    price: "Rp. 20.000-Rp.50.000",
     image:
-      "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR1psz38cm3S3mS34bHyHBhGCExmQTR7_08Qoh3dr2vjL79ASopbsAViEELrK0y",
+      "https://images.unsplash.com/photo-1502303122794-aba2d55cc873?q=80&w=931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    title: "Cappuccino",
+    title: "Pastry",
     description:
-      "Our cappuccino is made with high-quality espresso and steamed milk. It's a perfect drink for those who love the rich and creamy taste of coffee.",
-    price: "Rp. 20.000",
+      "Freshly baked pastries made with high-quality ingredients, perfect for snacking or as a sweet treat to accompany your favorite drink.",
+    price: "Rp. 20.000-Rp.120.000",
     image:
-      "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT1qzPq4tt_qSFart1QkD5WVRlldNcDv9mJfdRr52EyeodoKVMo6i9vzCHoJWZx",
+      "https://images.unsplash.com/photo-1645453014906-7f2874408d8d?q=80&w=926&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    title: "Lotus Biscoff Frappe",
+    title: "Main Course & Snack",
     description:
-      "A refreshing and sweet drink made with high-quality lotus biscotti and fresh milk. Perfect for those who love the taste of cookies and cream.",
-    price: "Rp. 20.000",
+      "Main Course is a variety of dishes that will satisfy your hunger and cravings. From classic comfort food to modern twists, our menu is designed to provide something for everyone.",
+    price: "Rp.30.000-Rp.200.000",
     image:
-      "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSdkFPKdMDzPjQvluDCC6MZ_4gQBg0DmrMyMhklyh1bg2VLhrs-iDMAWGZr5GA-",
-  },
-  {
-    title: "Cold Brewed Coffee",
-    description:
-      "Our cold brewed coffee is made with high-quality Arabica coffee beans and fresh water. It's a smooth and refreshing drink perfect for hot days.",
-    price: "Rp. 20.000",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmsFcuBuKN_TgR_tesBDc14tjxCk7FaulwU_48ymCEj47WHV-RgXN2l8ge7zfR",
+      "https://images.unsplash.com/photo-1562607635-4608ff48a859?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -54,9 +46,9 @@ export default function Menu() {
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500">Our Menu</p>
+          <p className="text-sm text-gray-500">INDO Cafe n Resto</p>
           <h5 className="text-xl sm:text-2xl font-semibold">
-            Indo Cafe n Resto Menu
+            Explore Our Categories
           </h5>
         </div>
       </div>
@@ -75,17 +67,18 @@ export default function Menu() {
               />
             </div>
             <div className="flex flex-col gap-2 flex-1">
-              <h6 className="text-base sm:text-lg font-bold">{menu.title}</h6>
-              <p className="text-sm sm:text-base text-gray-500 line-clamp-4">
+              <h6 className="text-base sm:text-lg font-semibold">
+                {menu.title}
+              </h6>
+              <p className="text-sm sm:text-base text-gray-900 line-clamp-4 leading-relaxed">
                 {menu.description}
               </p>
-              <h6 className="text-lg font-semibold mt-auto">{menu.price}</h6>
+              <p className="text-sm sm:text-base text-gray-900 line-clamp-4 leading-relaxed">
+                Price range : {menu.price}
+              </p>
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-center mt-4">
-        <ButtonCTA href="/menu" label="See All Menu" variant="primary" />
       </div>
     </section>
   );

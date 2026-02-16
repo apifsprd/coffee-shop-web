@@ -21,7 +21,8 @@ function ButtonBase({
     "flex flex-row items-center gap-4 py-2 px-4 rounded-full w-fit cursor-pointer hover:opacity-60 transition duration-300 ease-in-out";
 
   if (fullWidth) {
-    baseStyle += " w-full justify-center text-center";
+    baseStyle +=
+      " w-full justify-center text-center transition-all active:scale-95";
   }
 
   switch (variant) {

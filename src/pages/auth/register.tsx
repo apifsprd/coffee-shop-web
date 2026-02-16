@@ -1,7 +1,6 @@
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { ButtonBase, ButtonLink } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/form";
-import { api } from "@/lib/api";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -26,10 +25,10 @@ function Register() {
     }
 
     try {
-      const response = await api.register(email, password);
-      const { token } = response;
-      document.cookie = `token=${token}; path=/;`;
-      router.push("/dashboard");
+      // const response = await api.register(email, password);
+      // const { token } = response;
+      // document.cookie = `token=${token}; path=/;`;
+      // router.push("/dashboard");
     } catch (err) {
       const message =
         err instanceof Error
