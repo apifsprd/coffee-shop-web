@@ -1,15 +1,19 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ButtonBase, ButtonLink } from "@/components/ui/Button";
-import { api } from "@/lib/api";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { TextInput } from "@/components/ui/form";
 import Image from "next/image";
+import { login } from "@/lib/api-list/auth";
+import { useAppDispatch } from "@/lib/hooks";
+import { setCredentials } from "@/lib/features/auth/authSlice";
 
 export default function Login() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
+
+  const [email, setEmail] = useState("test1234567890@gmail.com");
+  const [password, setPassword] = useState("qwerty123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,10 +23,16 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await api.login(email, password);
-      const { token } = response;
-      localStorage.setItem("token", token);
-      router.push("/dashboard");
+      const response = await login({ email, password });
+      if (response.code === "200") {
+        dispatch(
+          setCredentials({ user: response.user, token: response.token }),
+        );
+        localStorage.setItem("token", response.token);
+        router.push("/dashboard");
+      } else {
+        setError(response.message);
+      }
     } catch (err) {
       const message =
         err instanceof Error

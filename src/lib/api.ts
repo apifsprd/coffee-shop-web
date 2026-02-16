@@ -1,87 +1,48 @@
-export const api = {
-  async login(email: string, password: string) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_NAME}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_URL || "",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        project_slug: process.env.NEXT_PUBLIC_PROJECT_SLUG,
-        project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Login failed");
-    }
-
-    return response.json();
-  },
-
-  async register(email: string, password: string) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_NAME}/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_MANAGE_KEY || "",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Registration failed");
-    }
-
-    return response.json();
-  },
-
-  async getUser(userId: number) {
-    const token = localStorage.getItem("token");
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_NAME}/users/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "x-api-key": process.env.NEXT_PUBLIC_MANAGE_KEY || "",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
-    }
-
-    return response.json();
-  },
-
-  async getUsers(page: number, per_page: number) {
-    const token = localStorage.getItem("token");
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_NAME}/users?page=${page}&per_page=${per_page}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "x-api-key": process.env.NEXT_PUBLIC_MANAGE_KEY || "",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
-    }
-
-    return response.json();
-  },
+const getToken = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("token");
+  }
+  return null;
 };
+
+const api = {
+  get: ({ url, withToken }: { url: string; withToken?: boolean }) => {
+    const headers: Record<string, string> = {};
+    if (process.env.NEXT_PUBLIC_API_KEY) {
+      headers.apiKey = process.env.NEXT_PUBLIC_API_KEY;
+    }
+    if (withToken) {
+      const token = getToken();
+      if (token) {
+        headers.authorization = `Bearer ${token}`;
+      }
+    }
+    return fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+      method: "GET",
+      headers,
+    }).then((res) => res.json());
+  },
+
+  post: (url: string, data: BodyInit) =>
+    fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+      method: "POST",
+      headers: process.env.NEXT_PUBLIC_API_KEY
+        ? { apiKey: process.env.NEXT_PUBLIC_API_KEY }
+        : {},
+      body: data,
+    }).then((res) => res.json()),
+
+  put: (url: string, data: unknown) =>
+    fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+      method: "PUT",
+      headers: {},
+      body: JSON.stringify(data),
+    }).then((res) => res.json()),
+
+  delete: (url: string) =>
+    fetch(process.env.NEXT_PUBLIC_API_URL + url, {
+      method: "DELETE",
+    }).then((res) => res.json()),
+};
+
+export default api;

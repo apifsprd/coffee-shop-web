@@ -1,6 +1,6 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { api } from "@/lib/api";
-import { User } from "@/types/auth";
+import { User } from "@/lib/types/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
