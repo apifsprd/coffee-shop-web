@@ -5,7 +5,7 @@ export const login = async (payload: { email: string; password: string }) => {
     const form = new FormData();
     form.append("email", payload.email);
     form.append("password", payload.password);
-    const response = await api.post("/api/v1/login", form);
+    const response = await api.post("/login", form);
     return response;
   } catch (error: any) {
     return {
@@ -29,7 +29,7 @@ export const register = async (payload: {
     form.append("password", payload.password);
     form.append("passwordRepeat", payload.passwordRepeat);
     form.append("role", payload.role);
-    const response = await api.post("/api/v1/register", form);
+    const response = await api.post("/register", form);
     return response;
   } catch (error: any) {
     return {
@@ -42,7 +42,7 @@ export const register = async (payload: {
 export const getUserData = async () => {
   try {
     const response = await api.get({
-      url: "/api/v1/user",
+      url: "/user",
       withToken: true,
     });
     return response;

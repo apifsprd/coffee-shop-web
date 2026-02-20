@@ -18,7 +18,7 @@ export default function Hero() {
           Networking groups welcomed and accomplished!
         </h5>
         <div className="flex justify-center mt-8 lg:justify-start">
-          <ButtonCTA href="#" label="Order Now" variant="primary" />
+          <ButtonCTA href="/dashboard" label="Order Now" variant="primary" />
         </div>
       </div>
       <div className="flex flex-1 justify-center items-center">

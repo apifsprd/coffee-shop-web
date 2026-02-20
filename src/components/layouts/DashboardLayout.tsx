@@ -11,23 +11,27 @@ const BOTTOM_NAV = [
   {
     name: "Home",
     href: "/dashboard",
-    icon: <Home size={24} className="text-gray-600" />,
+    icon: <Home size={24} className="text-gray-300" />,
+    activeIcon: <Home size={24} className="text-white" />,
   },
   {
     name: "Order",
     href: "/dashboard/order",
-    icon: <List size={24} className="text-gray-600" />,
+    icon: <List size={24} className="text-gray-300" />,
+    activeIcon: <List size={24} className="text-white" />,
   },
+
   {
     name: "Profile",
     href: "/dashboard/profile",
-    icon: <User size={24} className="text-gray-600" />,
+    icon: <User size={24} className="text-gray-300" />,
+    activeIcon: <User size={24} className="text-white" />,
   },
 ];
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = useAppSelector((state) => state.auth.user);
-  const router = useRouter();
+  const { asPath } = useRouter();
 
   const [greetings, setGreetings] = useState("");
 
@@ -48,15 +52,16 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-white relative">
       {/* NAVBAR */}
-      <nav className="bg-white border-b border-gray-200 fixed top-0 w-full">
+      <nav className="bg-white border-b border-gray-200 fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
           {/* LEFT */}
           <div className="flex  items-center gap-2">
             <div className="w-14 h-14 relative">
               <Image
-                src="/images/logo.png"
+                src={user?.profilePictureUrl || "/images/logo.png"}
                 alt={`Logo`}
                 fill
+                sizes="100vw"
                 className="object-cover rounded-full"
               />
             </div>
@@ -64,7 +69,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
               <Text variant="span" className="text-gray-600">
                 {greetings}
               </Text>
-              <Text variant="p" className="text-gray-900">
+              <Text variant="p" className="text-gray-900 font-semibold">
                 {user?.name}
               </Text>
             </div>
@@ -81,8 +86,15 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
           {BOTTOM_NAV.map((item, index) => (
             <Link href={item.href} key={index} className="flex-1">
               <div className="flex px-4 py-2 flex-col gap-1 justify-center items-center ">
-                {item.icon}
-                <Text variant="span" className="text-gray-600">
+                <div
+                  className={`${asPath === item.href ? "bg-primary" : "bg-white"} rounded-full py-1 px-4`}
+                >
+                  {asPath === item.href ? item.activeIcon : item.icon}
+                </div>
+                <Text
+                  variant="span"
+                  className={`${asPath === item.href ? "text-black font-medium" : "text-gray-300 font-medium"}`}
+                >
                   {item.name}
                 </Text>
               </div>

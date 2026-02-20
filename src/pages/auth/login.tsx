@@ -12,8 +12,8 @@ export default function Login() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [email, setEmail] = useState("test1234567890@gmail.com");
-  const [password, setPassword] = useState("qwerty123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +45,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     document.title = "Indo Cafe n Resto | Login";
   }, []);
@@ -77,7 +76,7 @@ export default function Login() {
             InputType="email"
             inputValue={email}
             inputOnChange={(e) => setEmail(e.target.value)}
-            inputPlaceholder="eve.holt@reqres.in"
+            inputPlaceholder="yourmail@example.com"
             mandatory={true}
           />
           <TextInput
@@ -85,7 +84,7 @@ export default function Login() {
             InputType="password"
             inputValue={password}
             inputOnChange={(e) => setPassword(e.target.value)}
-            inputPlaceholder="cityslicka"
+            inputPlaceholder="**********"
             mandatory={true}
           />
 

@@ -46,13 +46,13 @@ export default function Menu() {
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500">INDO Cafe n Resto</p>
+          <p className="text-sm text-gray-500">INDO CAFE N RESTO</p>
           <h5 className="text-xl sm:text-2xl font-semibold">
             Explore Our Categories
           </h5>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
         {DUMMY_MENU.map((menu, index) => (
           <div
             key={index}

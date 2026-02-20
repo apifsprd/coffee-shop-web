@@ -2,7 +2,7 @@ import api from "../api";
 
 export const getFoods = async () => {
   try {
-    const response = await api.get({ url: "/api/v1/foods" });
+    const response = await api.get({ url: "/foods" });
     return response;
   } catch (error: any) {
     return {

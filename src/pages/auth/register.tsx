@@ -2,6 +2,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import { ButtonBase, ButtonLink } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/form";
 import { register } from "@/lib/api-list/auth";
+import { toast } from "next-toast";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -35,7 +36,10 @@ function Register() {
         role: "user",
       });
       if (response.code === "200") {
-        router.push("/auth/login");
+        toast.success("Registration successful! Please login.");
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 300);
       } else {
         setError(response.message || response?.errors[0]?.message);
       }
@@ -60,7 +64,7 @@ function Register() {
 
           <h1 className="text-4xl font-bold text-center">Register</h1>
 
-          <p className="text-center text-gray-500">
+          <p className="text-left text-gray-500 leading-relaxed">
             Register an account to get access to our member-only features.
           </p>
         </div>
@@ -77,7 +81,6 @@ function Register() {
             inputValue={name}
             inputOnChange={(e) => setName(e.target.value)}
             inputPlaceholder="John Doe"
-            // helperText="Username : eve.holt@reqres.in"
             mandatory={true}
           />
           <TextInput
@@ -86,7 +89,6 @@ function Register() {
             inputValue={email}
             inputOnChange={(e) => setEmail(e.target.value)}
             inputPlaceholder="john.doe@example.com"
-            // helperText="Username : eve.holt@reqres.in"
             mandatory={true}
           />
           <TextInput
@@ -103,7 +105,6 @@ function Register() {
             inputValue={confirmPassword}
             inputOnChange={(e) => setConfirmPassword(e.target.value)}
             inputPlaceholder="*********"
-            // helperText="Password : cityslicka"
             mandatory={true}
           />
 
