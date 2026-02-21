@@ -4,6 +4,7 @@ import { toast } from "next-toast";
 import React, { useEffect, useState } from "react";
 import ProductList from "./components/index/molecules/ProductList";
 import { Text } from "@/components/ui/Text";
+import { cart } from "@/lib/types/food";
 
 export default function Cart() {
   const [data, setData] = useState([]);
@@ -29,7 +30,7 @@ export default function Cart() {
       <div className="flex flex-col gap-4 pb-8">
         <Text variant="h5">Cart ({data.length})</Text>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {data.map((item: food, index: number) => (
+          {data.map((item: cart, index: number) => (
             <ProductList
               key={index}
               item={item.food}

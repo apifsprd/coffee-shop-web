@@ -10,3 +10,13 @@ export interface food {
   totalLikes: number;
   isLike: boolean;
 }
+
+export interface cart {
+  id: string;
+  userId: string;
+  foodId: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  food: food;
+}
