@@ -1,27 +1,20 @@
 import api from "../api";
 
 // POST
-export const likeFood = async ({ payload }) => {
+export const likeFood = async (foodId: string) => {
   try {
-    const form = new FormData();
-    form.append("foodId", payload.foodId);
-    const response = await api.post("/like", form);
+    const payload = new FormData();
+    payload.append("foodId", foodId);
+    const response = await api.post({
+      url: "/like",
+      data: payload,
+      withToken: true,
+    });
     return response;
   } catch (error: any) {
     return {
-      success: false,
-      message: error.message,
-    };
-  }
-};
-export const unlikeFood = async ({ payload }) => {
-  try {
-    const response = await api.post("/unlike", payload);
-    return response;
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error.message,
+      code: "500",
+      message: "Failed to like product, please try again.",
     };
   }
 };

@@ -78,14 +78,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api-proxy/:path*",
-        destination: "https://api-bootcamp.do.dibimbing.id/api/:path*",
-      },
-    ];
-  },
 };
 
 export default nextConfig;

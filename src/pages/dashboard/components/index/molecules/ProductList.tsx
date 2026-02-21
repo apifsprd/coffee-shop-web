@@ -3,7 +3,7 @@ import { Text } from "@/components/ui/Text";
 import { addToCart } from "@/lib/api-list/cart";
 import { likeFood } from "@/lib/api-list/like";
 import formatRupiah from "@/utils/formatRupiah";
-import { Heart, Plus, Star } from "lucide-react";
+import { Heart, HeartIcon, Plus, Star } from "lucide-react";
 import { toast } from "next-toast";
 import Image from "next/image";
 import React from "react";
@@ -18,12 +18,19 @@ export default function ProductList({
     totalLikes: number;
     rating: number;
     price: number;
+    isLike: boolean;
   };
 }) {
   const handleLike = async (id: string) => {
     try {
-      const response = await likeFood({ payload: { foodId: id } });
-      console.log(response);
+      const response = await likeFood(id);
+      if (response.code === "200") {
+        toast.success("Product liked!");
+      } else {
+        toast.error(
+          response.message || "Failed to like product, please try again.",
+        );
+      }
     } catch (error: any) {
       toast.error(error.message || "Failed to like product, please try again.");
     }
@@ -34,11 +41,19 @@ export default function ProductList({
   const handleAddToCart = async (id: string) => {
     try {
       const response = await addToCart({ foodId: id });
-      console.log(response);
+
+      if (response.code === "200") {
+        toast.success("Added to cart!");
+      } else {
+        toast.error(
+          response.message || "Failed to add to cart, please try again.",
+        );
+      }
     } catch (error) {
       toast.error(error.message || "Failed to add to cart, please try again.");
     }
   };
+
   return (
     <div
       key={item.id}
@@ -81,11 +96,18 @@ export default function ProductList({
           </Text>
           <div className="flex flex-row justify-end items-center gap-2">
             <ButtonIcon
-              variant="primary"
+              variant={item.isLike ? "outlineDanger" : "outline"}
               shape="circle"
-              icon={<Heart className="w-4 h-4 text-white" />}
+              icon={
+                item.isLike ? (
+                  <Heart className="w-4 h-4 text-red-600" />
+                ) : (
+                  <Heart className="w-4 h-4 text-primary" />
+                )
+              }
               eventClick={() => handleLike(item.id)}
             />
+
             <ButtonIcon
               variant="primary"
               shape="circle"

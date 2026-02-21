@@ -19,8 +19,9 @@ const SHAPES: { [key: string]: string } = {
 
 const VARIANTS: { [key: string]: string } = {
   primary: "bg-primary text-black",
-  outline: "bg-white text-black border border-black",
-  secondary: "bg-black text-white",
+  outline: "bg-white text-black border border-primary",
+  outlineDanger: "bg-white text-red-600 border border-red-600",
+  ghost: "bg-white text-black",
 };
 
 function ButtonIcon({
@@ -44,30 +45,16 @@ function ButtonIcon({
     baseStyle += " cursor-pointer";
   }
 
-  switch (variant) {
-    case "primary":
-      return (
-        <button
-          className={`${baseStyle} bg-black text-white`}
-          onClick={eventClick}
-          disabled={isDisabled}
-        >
-          {!iconOnly && label}
-          {icon}
-        </button>
-      );
-    case "outline":
-      return (
-        <button
-          className={`${baseStyle} border border-black text-black`}
-          onClick={eventClick}
-          disabled={isDisabled}
-        >
-          {!iconOnly && label}
-          {icon}
-        </button>
-      );
-  }
+  return (
+    <button
+      className={`${baseStyle}`}
+      onClick={eventClick}
+      disabled={isDisabled}
+    >
+      {!iconOnly && label}
+      {icon}
+    </button>
+  );
 }
 
 export default ButtonIcon;

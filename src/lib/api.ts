@@ -23,11 +23,26 @@ const api = {
     }).then((res) => res.json());
   },
 
-  post: (url: string, data: BodyInit) =>
+  post: ({
+    url,
+    data,
+    withToken,
+  }: {
+    url: string;
+    data: FormData;
+    withToken?: boolean;
+  }) =>
     fetch(process.env.NEXT_PUBLIC_API_URL + url, {
       method: "POST",
       headers: process.env.NEXT_PUBLIC_API_KEY
-        ? { apiKey: process.env.NEXT_PUBLIC_API_KEY }
+        ? withToken
+          ? {
+              apiKey: process.env.NEXT_PUBLIC_API_KEY,
+              authorization: `Bearer ${getToken()}`,
+            }
+          : {
+              apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            }
         : {},
       body: data,
     }).then((res) => res.json()),
