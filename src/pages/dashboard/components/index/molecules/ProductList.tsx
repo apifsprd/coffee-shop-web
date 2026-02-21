@@ -75,7 +75,7 @@ export default function ProductList({
           response.message || "Failed to add to cart, please try again.",
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message || "Failed to add to cart, please try again.");
     }
   };
