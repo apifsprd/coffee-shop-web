@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface ButtonIconProps {
@@ -9,6 +10,8 @@ interface ButtonIconProps {
   variant?: string;
   isDisabled?: boolean;
   shape?: string;
+  type?: "button" | "link";
+  href?: string;
 }
 
 const SHAPES: { [key: string]: string } = {
@@ -22,6 +25,7 @@ const VARIANTS: { [key: string]: string } = {
   outline: "bg-white text-black border border-primary",
   outlineDanger: "bg-white text-red-600 border border-red-600",
   ghost: "bg-white text-black",
+  danger: "bg-red-100  text-white",
 };
 
 function ButtonIcon({
@@ -33,6 +37,8 @@ function ButtonIcon({
   variant = "primary",
   isDisabled = false,
   shape = "rounded",
+  type = "button",
+  href = "#",
 }: ButtonIconProps) {
   let baseStyle = `flex flex-row items-center gap-4 rounded-full w-fit hover:opacity-60 transition duration-300 ease-in-out ${SHAPES[shape]} ${VARIANTS[variant]}`;
 
@@ -45,16 +51,26 @@ function ButtonIcon({
     baseStyle += " cursor-pointer";
   }
 
-  return (
-    <button
-      className={`${baseStyle}`}
-      onClick={eventClick}
-      disabled={isDisabled}
-    >
-      {!iconOnly && label}
-      {icon}
-    </button>
-  );
+  switch (type) {
+    case "button":
+      return (
+        <button
+          className={`${baseStyle}`}
+          onClick={eventClick}
+          disabled={isDisabled}
+        >
+          {!iconOnly && label}
+          {icon}
+        </button>
+      );
+    case "link":
+      return (
+        <Link href={href} className={`${baseStyle}`}>
+          {!iconOnly && label}
+          {icon}
+        </Link>
+      );
+  }
 }
 
 export default ButtonIcon;

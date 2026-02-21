@@ -3,9 +3,11 @@ import React from "react";
 function SearchInput({
   label,
   placeholder,
+  onChangeText,
 }: {
   label: string;
   placeholder: string;
+  onChangeText: (text: string) => void;
 }) {
   return (
     <label htmlFor="Search" className="flex flex-col gap-1 h-auto w-full">
@@ -19,6 +21,7 @@ function SearchInput({
           id="Search"
           className="w-full rounded-lg border border-gray-300 px-2 py-2 text-sm sm:text-sm hover:border-black focus:border-black focus:outline-none"
           placeholder={placeholder}
+          onChange={(e) => onChangeText(e.target.value)}
         />
 
         <span className="absolute inset-y-0 right-1 grid w-8 place-content-center">
