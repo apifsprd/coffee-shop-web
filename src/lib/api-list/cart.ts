@@ -31,6 +31,30 @@ export const addToCart = async ({ foodId }: { foodId: string }) => {
     };
   }
 };
+export const updateQtyCart = async ({
+  cartID,
+  qty,
+}: {
+  cartID: string;
+  qty: number;
+}) => {
+  try {
+    const form = {
+      quantity: Number(qty),
+    };
+    const response = await api.post({
+      url: "/update-cart/" + cartID,
+      data: form,
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
 
 // DELETE
 export const removeFromCart = async ({ cartId }: { cartId: string }) => {

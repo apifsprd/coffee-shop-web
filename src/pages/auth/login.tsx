@@ -90,7 +90,7 @@ export default function Login() {
 
           <div className="w-full">
             <ButtonBase
-              type="submit"
+              type="button"
               disabled={loading}
               label={loading ? "Logging in..." : "Login"}
               fullWidth

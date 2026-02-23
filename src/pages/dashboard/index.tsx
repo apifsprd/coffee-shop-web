@@ -94,7 +94,7 @@ export default function Dashboard() {
           <ButtonFilter items={[{}, {}, {}, {}, {}, {}]} />
         </div> */}
       </div>
-      <div className="w-full flex flex-col gap-2 mt-2">
+      <div className="w-full flex flex-col gap-2 mt-2 pb-12">
         {!loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredData.length > 0

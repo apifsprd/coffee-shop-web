@@ -110,7 +110,7 @@ function Register() {
 
           <div className="w-full mt-12">
             <ButtonBase
-              type="submit"
+              type="button"
               disabled={loading}
               label={loading ? "Loading..." : "Register"}
               fullWidth

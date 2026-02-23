@@ -1,6 +1,6 @@
 import { ButtonIcon } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
-import { addToCart, removeFromCart } from "@/lib/api-list/cart";
+import { addToCart, removeFromCart, updateQtyCart } from "@/lib/api-list/cart";
 import { likeFood, unlikeFood } from "@/lib/api-list/like";
 import formatRupiah from "@/utils/formatRupiah";
 import { Heart, Minus, Plus, Star, Trash } from "lucide-react";
@@ -96,6 +96,34 @@ export default function ProductList({
       );
     }
   };
+  const handleMinQty = async () => {
+    if (qty > 1) {
+      try {
+        const response = await updateQtyCart({ cartID, qty: qty - 1 });
+        if (response.code === "200") {
+          onRefetch();
+          setQty(qty - 1);
+          toast.success("Quantity updated!");
+        }
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+  };
+  const handlePlusQty = async () => {
+    try {
+      const response = await updateQtyCart({ cartID, qty: qty + 1 });
+      if (response.code === "200") {
+        onRefetch();
+        setQty(qty + 1);
+        toast.success("Quantity updated!");
+      } else {
+        toast.error(response.status);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div
@@ -147,7 +175,7 @@ export default function ProductList({
                   variant="outline"
                   shape="circle"
                   icon={<Minus className="w-3 h-3 text-primary" />}
-                  eventClick={() => handleRemoveFromCart(item.id)}
+                  eventClick={() => handleMinQty()}
                 />
                 <div className="flex justify-center items-center w-8 h-8 px-8 bg-gray-100 border border-gray-200 rounded-lg">
                   <Text variant="span" className="text-center text-gray-900">
@@ -158,7 +186,7 @@ export default function ProductList({
                   variant="outline"
                   shape="circle"
                   icon={<Plus className="w-3 h-3 text-primary" />}
-                  eventClick={() => handleRemoveFromCart(item.id)}
+                  eventClick={() => handlePlusQty()}
                 />
               </div>
             </>

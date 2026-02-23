@@ -1,19 +1,30 @@
+import Link from "next/link";
 import React from "react";
 
 interface ButtonBaseProps {
   eventClick?: () => void;
   label?: string;
   variant?: string;
-  type?: "button" | "submit" | "reset" | undefined;
+  type?: "button" | "link";
   disabled?: boolean;
   fullWidth?: boolean;
   size?: "sm" | "md" | "lg";
+  href?: string;
+  shape?: "pill" | "rounded";
 }
 
 const sizesStyle = {
   sm: "text-sm py-1 px-2",
   md: "text-base py-1 px-4",
   lg: "text-lg py-2 px-6",
+};
+
+const VARIANTS: { [key: string]: string } = {
+  primary: "bg-primary text-white",
+  secondary: "bg-white text-black",
+  danger: "bg-red-600 text-white",
+  outline: "bg-white text-black border border-black",
+  outlineDanger: "bg-white text-red-600 border border-red-600",
 };
 
 function ButtonBase({
@@ -24,72 +35,46 @@ function ButtonBase({
   disabled = false,
   fullWidth = false,
   size = "md",
+  href = "#",
+  shape = "pill",
 }: ButtonBaseProps) {
-  let baseStyle =
-    "flex flex-row items-center gap-4 rounded-full w-fit cursor-pointer hover:opacity-60 transition duration-300 ease-in-out";
+  let baseStyle = `flex flex-row items-center gap-4  w-fit cursor-pointer hover:opacity-60 transition duration-300 ease-in-out `;
 
   if (fullWidth) {
     baseStyle +=
       " w-full justify-center text-center transition-all active:scale-95";
   }
-
   baseStyle += ` ${sizesStyle[size]}`;
+  baseStyle += ` ${VARIANTS[variant]}`;
 
-  switch (variant) {
-    case "primary":
+  if (shape === "pill") {
+    baseStyle += " rounded-full";
+  }
+
+  if (shape === "rounded") {
+    baseStyle += " rounded-md";
+  }
+
+  if (disabled) {
+    baseStyle += " opacity-50 cursor-not-allowed";
+  }
+
+  switch (type) {
+    case "button":
       return (
         <button
-          className={`${baseStyle} bg-black text-white`}
+          className={`${baseStyle}`}
           onClick={eventClick}
-          type={type}
           disabled={disabled}
         >
           {label}
         </button>
       );
-    case "secondary":
+    case "link":
       return (
-        <button
-          className={`${baseStyle} bg-white text-black`}
-          onClick={eventClick}
-          type={type}
-          disabled={disabled}
-        >
+        <Link href={href} className={`${baseStyle} `} onClick={eventClick}>
           {label}
-        </button>
-      );
-    case "outline":
-      return (
-        <button
-          className={`${baseStyle} border border-black text-black`}
-          onClick={eventClick}
-          type={type}
-          disabled={disabled}
-        >
-          {label}
-        </button>
-      );
-    case "outline-inactive":
-      return (
-        <button
-          className={`${baseStyle} border border-gray-300 text-gray-400`}
-          onClick={eventClick}
-          type={type}
-          disabled={disabled}
-        >
-          {label}
-        </button>
-      );
-    case "danger":
-      return (
-        <button
-          className={`${baseStyle} bg-red-600 text-white`}
-          onClick={eventClick}
-          type={type}
-          disabled={disabled}
-        >
-          {label}
-        </button>
+        </Link>
       );
   }
 }

@@ -23,29 +23,45 @@ const api = {
     }).then((res) => res.json());
   },
 
-  post: ({
+  post: async ({
     url,
     data,
     withToken,
   }: {
     url: string;
-    data: FormData;
+    data: FormData | string | object;
     withToken?: boolean;
-  }) =>
-    fetch(process.env.NEXT_PUBLIC_API_URL + url, {
-      method: "POST",
-      headers: process.env.NEXT_PUBLIC_API_KEY
-        ? withToken
-          ? {
-              apiKey: process.env.NEXT_PUBLIC_API_KEY,
-              authorization: `Bearer ${getToken()}`,
-            }
-          : {
-              apiKey: process.env.NEXT_PUBLIC_API_KEY,
-            }
-        : {},
-      body: data,
-    }).then((res) => res.json()),
+  }) => {
+    const headers: Record<string, string> = {};
+
+    if (process.env.NEXT_PUBLIC_API_KEY) {
+      headers["apiKey"] = process.env.NEXT_PUBLIC_API_KEY;
+    }
+
+    if (withToken) {
+      headers["authorization"] = `Bearer ${getToken()}`;
+    }
+
+    let body: BodyInit;
+
+    if (data instanceof FormData) {
+      body = data;
+    } else {
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify(data);
+    }
+
+    const response = await fetch(
+      (process.env.NEXT_PUBLIC_API_URL || "") + url,
+      {
+        method: "POST",
+        headers: headers,
+        body: body, // Sekarang TypeScript tidak akan protes lagi
+      },
+    );
+
+    return response.json();
+  },
 
   put: (url: string, data: unknown) =>
     fetch(process.env.NEXT_PUBLIC_API_URL + url, {

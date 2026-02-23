@@ -3,7 +3,7 @@ import Image from "next/image";
 import { withAuth } from "./withAuth";
 import { Text } from "../ui/Text";
 import { useAppSelector } from "@/lib/hooks";
-import { Home, List, User } from "lucide-react";
+import { Heart, Home, List, User } from "lucide-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -20,7 +20,6 @@ const BOTTOM_NAV = [
     icon: <List size={24} className="text-gray-300" />,
     activeIcon: <List size={24} className="text-white" />,
   },
-
   {
     name: "Profile",
     href: "/dashboard/profile",
