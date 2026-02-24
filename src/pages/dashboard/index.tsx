@@ -17,23 +17,18 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
 
-  // --- STATE BARU UNTUK INFINITE SCROLL ---
-  const [visibleCount, setVisibleCount] = useState(10); // Jumlah data awal yang tampil
+  const [visibleCount, setVisibleCount] = useState(10);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-  // Fungsi untuk menambah data saat scroll sampai bawah
   const loadMore = () => {
     if (isFetchingMore) return;
     setIsFetchingMore(true);
-
-    // Simulasi loading halus 500ms agar UX terasa "nyata"
     setTimeout(() => {
       setVisibleCount((prev) => prev + 10);
       setIsFetchingMore(false);
     }, 500);
   };
 
-  // --- LOGIKA INTERSECTION OBSERVER ---
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(
     (node: HTMLDivElement) => {
@@ -41,9 +36,7 @@ export default function Dashboard() {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        // Jika elemen "sentinel" paling bawah terlihat di layar
         if (entries[0].isIntersecting) {
-          // Cek apakah masih ada data yang bisa ditampilkan
           const totalAvailable = keyword ? filteredData.length : data.length;
           if (visibleCount < totalAvailable) {
             loadMore();
@@ -57,7 +50,7 @@ export default function Dashboard() {
   );
 
   const fetchData = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const response = await getFoods();
       if (response.code === "200") {
@@ -82,7 +75,7 @@ export default function Dashboard() {
   };
 
   const refetch = () => {
-    fetchData();
+    // fetchData();
     getCarts();
   };
 
@@ -98,39 +91,40 @@ export default function Dashboard() {
         item.name.toLowerCase().includes(keyword.toLowerCase()),
       );
       setFilteredData(filtered);
-      // Reset jumlah tampilan ke 10 setiap kali user mencari sesuatu
       setVisibleCount(10);
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [keyword, data]);
 
-  // --- DATA YANG AKAN DI-RENDER ---
-  // Kita menggunakan slice untuk mengambil sebagian data sesuai visibleCount
   const displayData = keyword
     ? filteredData.slice(0, visibleCount)
     : data.slice(0, visibleCount);
 
   return (
     <DashboardLayout>
-      <div className="w-full flex flex-col gap-4 sticky top-18 bg-white pt-2 pb-2 z-50">
-        <div className="flex flex-row items-center gap-2">
-          <SearchInput
-            label=""
-            placeholder="Search makanan enak..."
-            onChangeText={(text: string) => setKeyword(text)}
-          />
-          <div className="relative w-fit">
+      {/* SEARCH SECTION: Diperbaiki agar pas dengan header fixed di desktop & mobile */}
+      <div className="w-full flex flex-col gap-4 sticky top-[64px] md:top-[72px] bg-gray-50/90 backdrop-blur-sm pt-4 pb-4 z-30">
+        <div className="flex flex-row items-center gap-3">
+          <div className="flex-1">
+            <SearchInput
+              label=""
+              placeholder="Cari menu favoritmu..."
+              onChangeText={(text: string) => setKeyword(text)}
+            />
+          </div>
+          <div className="relative">
             <ButtonIcon
-              icon={<ShoppingCart size={20} color="white" />}
+              icon={<ShoppingCart size={22} color="white" />}
               label=""
               variant="primary"
               shape="square"
               type="link"
               href="/dashboard/cart"
+              className="shadow-md hover:shadow-lg transition-all"
             />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full border-2 border-white shadow-sm transform translate-x-1/4 -translate-y-1/4">
+              <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full border-2 border-white shadow-sm">
                 {cartCount > 99 ? "99+" : cartCount}
               </span>
             )}
@@ -138,48 +132,51 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-2 mt-2 pb-12">
+      {/* PRODUCT GRID: Responsif untuk 4 jenis device */}
+      <div className="w-full flex flex-col gap-6 mt-4 pb-24 md:pb-12">
         {!loading ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {displayData.map((item: food, index: number) => (
-                <ProductList
-                  key={item.id || index} // Selalu utamakan ID unik
-                  item={item}
-                  onRefetch={refetch}
-                  variant="add"
-                />
+                <div
+                  key={item.id || index}
+                  className="transition-transform duration-300 hover:scale-[1.02]"
+                >
+                  <ProductList item={item} onRefetch={refetch} variant="add" />
+                </div>
               ))}
             </div>
 
-            {/* ELEMENT TARGET UNTUK INFINITE SCROLL */}
+            {/* INFINITE SCROLL TRIGGER */}
             <div
               ref={lastElementRef}
-              className="w-full h-20 flex items-center justify-center mt-4"
+              className="w-full py-10 flex flex-col items-center justify-center"
             >
-              {isFetchingMore && (
-                <div className="flex flex-col items-center gap-2">
+              {isFetchingMore ? (
+                <div className="flex flex-col items-center gap-3">
                   <SpinnerLoading />
-                  <p className="text-xs text-gray-400">
-                    Memuat lebih banyak...
+                  <p className="text-sm text-gray-400 font-medium">
+                    Menyiapkan menu lainnya...
                   </p>
                 </div>
-              )}
-
-              {/* Pesan jika semua data sudah tampil */}
-              {!isFetchingMore &&
+              ) : (
                 displayData.length >=
                   (keyword ? filteredData.length : data.length) &&
                 data.length > 0 && (
-                  <p className="text-sm text-gray-400">
-                    Semua menu sudah ditampilkan
-                  </p>
-                )}
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="h-[1px] w-20 bg-gray-200" />
+                    <p className="text-sm text-gray-400">
+                      Kamu sudah melihat semua menu
+                    </p>
+                  </div>
+                )
+              )}
             </div>
           </>
         ) : (
-          <div className="h-64 flex flex-col justify-center items-center">
+          <div className="h-[60vh] flex flex-col justify-center items-center gap-4">
             <SpinnerLoading />
+            <p className="text-gray-500 animate-pulse">Memuat data resto...</p>
           </div>
         )}
       </div>

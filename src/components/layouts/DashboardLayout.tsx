@@ -2,43 +2,52 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { withAuth } from "./withAuth";
 import { Text } from "../ui/Text";
-import { useAppSelector } from "@/lib/hooks";
-import { Heart, Home, List, User } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { Heart, Home, List, User, LogOut } from "lucide-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { logout } from "@/lib/features/auth/authSlice";
+import { ButtonBase } from "../ui/Button";
 
 const BOTTOM_NAV = [
   {
     name: "Home",
     href: "/dashboard",
-    icon: <Home size={20} className="text-gray-300" />,
-    activeIcon: <Home size={20} className="text-white" />,
+    icon: <Home size={22} />,
+    activeIcon: <Home size={22} />,
   },
   {
     name: "Order",
     href: "/dashboard/order",
-    icon: <List size={20} className="text-gray-300" />,
-    activeIcon: <List size={20} className="text-white" />,
+    icon: <List size={22} />,
+    activeIcon: <List size={22} />,
   },
   {
     name: "Favorite",
     href: "/dashboard/favorite",
-    icon: <Heart size={20} className="text-gray-300" />,
-    activeIcon: <Heart size={20} className="text-white" />,
+    icon: <Heart size={22} />,
+    activeIcon: <Heart size={22} />,
   },
   {
     name: "Profile",
     href: "/dashboard/profile",
-    icon: <User size={20} className="text-gray-300" />,
-    activeIcon: <User size={20} className="text-white" />,
+    icon: <User size={22} />,
+    activeIcon: <User size={22} />,
   },
 ];
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = useAppSelector((state) => state.auth.user);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const { asPath } = useRouter();
-
   const [greetings, setGreetings] = useState("");
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(logout());
+    router.push("/auth/login");
+  };
 
   useEffect(() => {
     const updateGreeting = () => {
@@ -47,93 +56,123 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
       else if (hour < 18) setGreetings("Good Afternoon");
       else setGreetings("Good Evening");
     };
-
-    updateGreeting(); // Jalankan sekali saat mount
-    const timer = setInterval(updateGreeting, 60000); // Cek tiap 1 menit
-
-    return () => clearInterval(timer); // Cleanup agar tidak memory leak
+    updateGreeting();
+    const timer = setInterval(updateGreeting, 60000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white relative">
-      {/* NAVBAR */}
-      <nav className="bg-white border-b border-gray-200 fixed top-0 w-full z-50">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          {/* LEFT */}
-          <div className="flex  items-center gap-2">
-            <div className="w-14 h-14 relative">
-              <Image
-                src={user?.profilePictureUrl || "/images/logo.png"}
-                alt={`Logo`}
-                fill
-                sizes="100vw"
-                className="object-cover rounded-full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <Text variant="span" className="text-gray-600">
-                {greetings}
-              </Text>
-              <Text variant="p" className="text-gray-900 font-semibold">
-                {user?.name}
-              </Text>
-            </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      <aside className="hidden md:flex md:w-64 lg:w-72 bg-white border-r border-gray-200 flex-col fixed h-full z-50">
+        <div className="p-6 flex items-center gap-3 border-b border-gray-100">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold relative">
+            <Image src="/images/logo-transparent.png" alt="logo" fill />
           </div>
+          <p className="font-bold text-base">INDO CAFE N RESTO</p>
         </div>
-      </nav>
 
-      {/* CONTENT */}
-      <main className="flex-1 w-full mx-auto px-2 py-22">{children}</main>
+        <nav className="flex-1 p-4 space-y-2">
+          {BOTTOM_NAV.map((item) => {
+            const isActive = asPath === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-primary text-white shadow-lg shadow-orange-100" : "text-gray-500 hover:bg-gray-50"}`}
+              >
+                {React.cloneElement(item.icon as React.ReactElement, {
+                  className: isActive ? "text-white" : "text-gray-400",
+                })}
+                <span className="font-medium">{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
 
-      {/* BOTTOM NAV */}
-      {[
-        "/dashboard",
-        "/dashboard/order",
-        "/dashboard/profile",
-        "/dashboard/favorite",
-      ].includes(asPath) && (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-gray-200 z-[999]">
-          {/* Gunakan grid-cols-4 untuk membagi ruang menjadi 4 bagian sama rata */}
-          <div className="grid grid-cols-4 w-full h-16">
-            {BOTTOM_NAV.map((item, index) => {
-              const isActive = asPath === item.href;
+        <div className="p-4 border-t border-gray-100">
+          <ButtonBase
+            label="Logout"
+            variant="danger"
+            shape="rounded"
+            eventClick={handleLogout}
+            fullWidth
+          />
+        </div>
+      </aside>
 
-              return (
-                <Link
-                  href={item.href}
-                  key={index}
-                  className="flex items-center justify-center"
+      {/* MAIN CONTENT AREA */}
+      <div className="flex-1 flex flex-col md:pl-64 lg:pl-72">
+        {/* TOP NAVBAR */}
+        <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 fixed top-0 w-full md:w-[calc(100%-16rem)] lg:w-[calc(100%-18rem)] z-40">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 relative border-2 border-white shadow-sm rounded-full overflow-hidden">
+                <Image
+                  src={user?.profilePictureUrl || "/images/logo.png"}
+                  alt="Profile"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Text
+                  variant="span"
+                  className="text-xs md:text-xs text-gray-500 uppercase  font-normal"
                 >
-                  <div className="flex flex-col gap-1 items-center justify-center w-full">
-                    {/* Bagian Icon: Hilangkan px-4 yang terlalu lebar agar tidak sumpek */}
+                  {greetings}
+                </Text>
+                <Text
+                  variant="p"
+                  className="text-base md:text-base text-gray-900 font-semoibold leading-none"
+                >
+                  {user?.name}
+                </Text>
+              </div>
+            </div>
+
+            <div className="hidden sm:block"></div>
+          </div>
+        </header>
+
+        {/* PAGE CONTENT */}
+        <main className="p-4 md:p-8 mt-20 mb-20 md:mb-0">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </main>
+
+        {/* MOBILE BOTTOM NAV  */}
+        {[
+          "/dashboard",
+          "/dashboard/order",
+          "/dashboard/profile",
+          "/dashboard/favorite",
+        ].includes(asPath) && (
+          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-2 py-1 z-999 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+            <div className="grid grid-cols-4 h-16">
+              {BOTTOM_NAV.map((item) => {
+                const isActive = asPath === item.href;
+                return (
+                  <Link
+                    href={item.href}
+                    key={item.name}
+                    className="flex flex-col items-center justify-center gap-1"
+                  >
                     <div
-                      className={`${
-                        isActive
-                          ? "bg-primary text-white"
-                          : "bg-white text-gray-400"
-                      } rounded-full py-1 px-3 transition-colors duration-200`}
+                      className={`p-2 rounded-xl transition-all ${isActive ? "bg-primary text-white scale-110" : "text-gray-400"}`}
                     >
                       {isActive ? item.activeIcon : item.icon}
                     </div>
-
-                    {/* Bagian Teks: Gunakan text-[10px] agar aman di layar kecil */}
-                    <Text
-                      variant="span"
-                      className={`text-xs sm:text-xs leading-tight ${
-                        isActive
-                          ? "text-black font-semibold"
-                          : "text-gray-400 font-medium"
-                      }`}
+                    <span
+                      className={`text-xs ${isActive ? "text-primary font-semibold" : "text-gray-400  font-normal "}`}
                     >
                       {item.name}
-                    </Text>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
-      )}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+        )}
+      </div>
     </div>
   );
 }
