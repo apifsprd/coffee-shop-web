@@ -1,16 +1,42 @@
 import Badge from "@/components/ui/Badge";
 import { ButtonBase } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { cancelTransaction } from "@/lib/api-list/transaction";
 import { order } from "@/lib/types/order";
+import { toast } from "next-toast";
 import Image from "next/image";
 import React from "react";
 
 export default function OrderList({ item }: { item: order }) {
+  const handleCancelOrder = async (id: string) => {
+    try {
+      const response = await cancelTransaction({ transactionID: id });
+      if (response.code === "200") {
+        toast.success(response.message);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      } else {
+        toast.error(response.errors[0].message);
+      }
+    } catch (error: any) {
+      toast.error("Failed to cancel order, please try again.");
+    }
+  };
   return (
     <div className="p-2 border border-gray-200 rounded-xl flex flex-col gap-2">
       <div className="flex flex-row justify-between items-center">
         <Text variant="span">#{item.invoiceId}</Text>
-        <Badge size="sm" variant="neutral">
+        <Badge
+          size="sm"
+          variant={
+            item.status === "pending"
+              ? "neutral"
+              : item.status === "success"
+                ? "success"
+                : "danger"
+          }
+        >
           {item.status}
         </Badge>
       </div>
@@ -70,11 +96,36 @@ export default function OrderList({ item }: { item: order }) {
           </Text>
           <Text variant="h6">Rp. 100.000</Text>
         </div>
-        <div>
+      </div>
+      <div className="flex flex-row justify-between items-center gap-4">
+        {item.status === "success" && (
+          <div className="flex-1">
+            <ButtonBase
+              label="Give a rating"
+              type="link"
+              href={`/dashboard/order/rating/${item.id}`}
+              fullWidth
+              variant="outlinePrimary"
+            />
+          </div>
+        )}
+        {item.status === "pending" && (
+          <div className="flex-1">
+            <ButtonBase
+              label="Cancel Order"
+              type="button"
+              fullWidth
+              variant="outlineDanger"
+              eventClick={() => handleCancelOrder(item.id)}
+            />
+          </div>
+        )}
+        <div className="flex-1">
           <ButtonBase
-            label="See Detail"
+            label={item.status === "pending" ? "Proof Payment" : "View Order"}
             type="link"
             href={`/dashboard/order/${item.id}`}
+            fullWidth
           />
         </div>
       </div>

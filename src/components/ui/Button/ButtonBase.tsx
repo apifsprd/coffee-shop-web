@@ -24,6 +24,7 @@ const VARIANTS: { [key: string]: string } = {
   secondary: "bg-white text-black",
   danger: "bg-red-600 text-white",
   outline: "bg-white text-black border border-black",
+  outlinePrimary: "bg-white text-primary border border-primary",
   outlineDanger: "bg-white text-red-600 border border-red-600",
 };
 

@@ -27,7 +27,7 @@ export default function Order() {
     <DashboardLayout>
       <div className="flex flex-col gap-4">
         <Text variant="h5">My Order</Text>
-        <div>
+        <div className="flex flex-col gap-4">
           {data.map((item, index) => (
             <OrderList key={index} item={item} />
           ))}

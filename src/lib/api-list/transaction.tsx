@@ -68,3 +68,22 @@ export const updateTransactionProofPayment = async ({
     };
   }
 };
+export const cancelTransaction = async ({
+  transactionID,
+}: {
+  transactionID: string;
+}) => {
+  try {
+    const response = await api.post({
+      url: `/cancel-transaction/${transactionID}`,
+      data: {},
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};

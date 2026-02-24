@@ -96,7 +96,10 @@ export default function Cart() {
       };
       const response = await createTransaction(payload);
       if (response.code === "200") {
-        router.push(`/dashboard/order`);
+        toast.success(response.message);
+        setTimeout(() => {
+          router.push(`/dashboard/order`);
+        }, 500);
       }
     } catch (error: any) {
       toast.error(error.message);

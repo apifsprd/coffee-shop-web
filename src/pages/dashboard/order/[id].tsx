@@ -6,9 +6,7 @@ import {
   updateTransactionProofPayment,
 } from "@/lib/api-list/transaction";
 import { order } from "@/lib/types/order";
-import formatRupiah from "@/utils/formatRupiah";
 import { toast } from "next-toast";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import OrderSumList from "../components/order/molecules/OrderSumList";
@@ -66,7 +64,16 @@ export default function OrderDetail() {
             <Text variant="span">{transaction.invoiceId}</Text>
           </div>
           <div>
-            <Badge size="md" variant="neutral">
+            <Badge
+              size="md"
+              variant={
+                transaction.status === "pending"
+                  ? "neutral"
+                  : transaction.status === "success"
+                    ? "success"
+                    : "danger"
+              }
+            >
               {transaction.status}
             </Badge>
           </div>

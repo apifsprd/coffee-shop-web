@@ -11,20 +11,26 @@ const BOTTOM_NAV = [
   {
     name: "Home",
     href: "/dashboard",
-    icon: <Home size={24} className="text-gray-300" />,
-    activeIcon: <Home size={24} className="text-white" />,
+    icon: <Home size={20} className="text-gray-300" />,
+    activeIcon: <Home size={20} className="text-white" />,
   },
   {
     name: "Order",
     href: "/dashboard/order",
-    icon: <List size={24} className="text-gray-300" />,
-    activeIcon: <List size={24} className="text-white" />,
+    icon: <List size={20} className="text-gray-300" />,
+    activeIcon: <List size={20} className="text-white" />,
+  },
+  {
+    name: "Favorite",
+    href: "/dashboard/favorite",
+    icon: <Heart size={20} className="text-gray-300" />,
+    activeIcon: <Heart size={20} className="text-white" />,
   },
   {
     name: "Profile",
     href: "/dashboard/profile",
-    icon: <User size={24} className="text-gray-300" />,
-    activeIcon: <User size={24} className="text-white" />,
+    icon: <User size={20} className="text-gray-300" />,
+    activeIcon: <User size={20} className="text-white" />,
   },
 ];
 
@@ -80,27 +86,54 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 w-full mx-auto px-2 py-22">{children}</main>
 
       {/* BOTTOM NAV */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200">
-        <div className="w-full mx-auto px-4 py-2 flex flex-row gap-4 items-center justify-between">
-          {BOTTOM_NAV.map((item, index) => (
-            <Link href={item.href} key={index} className="flex-1">
-              <div className="flex px-4 py-2 flex-col gap-1 justify-center items-center ">
-                <div
-                  className={`${asPath === item.href ? "bg-primary" : "bg-white"} rounded-full py-1 px-4`}
+      {[
+        "/dashboard",
+        "/dashboard/order",
+        "/dashboard/profile",
+        "/dashboard/favorite",
+      ].includes(asPath) && (
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-gray-200 z-[999]">
+          {/* Gunakan grid-cols-4 untuk membagi ruang menjadi 4 bagian sama rata */}
+          <div className="grid grid-cols-4 w-full h-16">
+            {BOTTOM_NAV.map((item, index) => {
+              const isActive = asPath === item.href;
+
+              return (
+                <Link
+                  href={item.href}
+                  key={index}
+                  className="flex items-center justify-center"
                 >
-                  {asPath === item.href ? item.activeIcon : item.icon}
-                </div>
-                <Text
-                  variant="span"
-                  className={`${asPath === item.href ? "text-black font-medium" : "text-gray-300 font-medium"}`}
-                >
-                  {item.name}
-                </Text>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </nav>
+                  <div className="flex flex-col gap-1 items-center justify-center w-full">
+                    {/* Bagian Icon: Hilangkan px-4 yang terlalu lebar agar tidak sumpek */}
+                    <div
+                      className={`${
+                        isActive
+                          ? "bg-primary text-white"
+                          : "bg-white text-gray-400"
+                      } rounded-full py-1 px-3 transition-colors duration-200`}
+                    >
+                      {isActive ? item.activeIcon : item.icon}
+                    </div>
+
+                    {/* Bagian Teks: Gunakan text-[10px] agar aman di layar kecil */}
+                    <Text
+                      variant="span"
+                      className={`text-xs sm:text-xs leading-tight ${
+                        isActive
+                          ? "text-black font-semibold"
+                          : "text-gray-400 font-medium"
+                      }`}
+                    >
+                      {item.name}
+                    </Text>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      )}
     </div>
   );
 }

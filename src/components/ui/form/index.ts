@@ -1,3 +1,5 @@
 import TextInput from "./TextInput";
+import StarRating from "./StarRating";
+import TextArea from "./TextArea";
 
-export { TextInput };
+export { TextInput, StarRating, TextArea };
