@@ -75,7 +75,7 @@ export default function Dashboard() {
   };
 
   const refetch = () => {
-    // fetchData();
+    fetchData();
     getCarts();
   };
 

@@ -1,4 +1,4 @@
-import type { AppProps } from "next/app";
+import type { AppProps } from "next/dashboard";
 import { Provider } from "react-redux";
 import { store } from "../lib/store"; // Sesuaikan path-nya
 import "@/styles/globals.css";

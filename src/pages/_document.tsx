@@ -7,7 +7,7 @@ export default function Document() {
       <Head>
         <Link
           rel="apple-touch-icon"
-          href="/images/favivon/apple-touch-icon.png"
+          href="/images/favivon/dashboardle-touch-icon.png"
         />
         <Link
           rel="icon"

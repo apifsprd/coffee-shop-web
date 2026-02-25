@@ -3,7 +3,16 @@ import Image from "next/image";
 import { withAuth } from "./withAuth";
 import { Text } from "../ui/Text";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { Heart, Home, List, User, LogOut } from "lucide-react";
+import {
+  Heart,
+  Home,
+  List,
+  User,
+  ChartNoAxesCombined,
+  CircleDollarSign,
+  Pizza,
+  Users,
+} from "lucide-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { logout } from "@/lib/features/auth/authSlice";
@@ -33,6 +42,32 @@ const BOTTOM_NAV = [
     href: "/dashboard/profile",
     icon: <User size={22} />,
     activeIcon: <User size={22} />,
+  },
+];
+const BOTTOM_NAV_ADMIN = [
+  {
+    name: "Dashboard",
+    href: "/dashboard/admin/overview",
+    icon: <ChartNoAxesCombined size={22} />,
+    activeIcon: <ChartNoAxesCombined size={22} />,
+  },
+  {
+    name: "Transaction",
+    href: "/dashboard/admin/transaction",
+    icon: <CircleDollarSign size={22} />,
+    activeIcon: <CircleDollarSign size={22} />,
+  },
+  {
+    name: "Menu",
+    href: "/dashboard/admin/menu",
+    icon: <Pizza size={22} />,
+    activeIcon: <Pizza size={22} />,
+  },
+  {
+    name: "Customer",
+    href: "/dashboard/admin/customer",
+    icon: <Users size={22} />,
+    activeIcon: <Users size={22} />,
   },
 ];
 
@@ -72,21 +107,37 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          {BOTTOM_NAV.map((item) => {
-            const isActive = asPath === item.href;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-primary text-white shadow-lg shadow-orange-100" : "text-gray-500 hover:bg-gray-50"}`}
-              >
-                {React.cloneElement(item.icon as React.ReactElement, {
-                  className: isActive ? "text-white" : "text-gray-400",
-                })}
-                <span className="font-medium">{item.name}</span>
-              </Link>
-            );
-          })}
+          {user?.role === "admin"
+            ? BOTTOM_NAV_ADMIN.map((item) => {
+                const isActive = asPath === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-primary text-white shadow-lg shadow-orange-100" : "text-gray-500 hover:bg-gray-50"}`}
+                  >
+                    {React.cloneElement(item.icon as React.ReactElement, {
+                      className: isActive ? "text-white" : "text-gray-400",
+                    })}
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                );
+              })
+            : BOTTOM_NAV.map((item) => {
+                const isActive = asPath === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-primary text-white shadow-lg shadow-orange-100" : "text-gray-500 hover:bg-gray-50"}`}
+                  >
+                    {React.cloneElement(item.icon as React.ReactElement, {
+                      className: isActive ? "text-white" : "text-gray-400",
+                    })}
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                );
+              })}
         </nav>
 
         <div className="p-4 border-t border-gray-100">
@@ -145,30 +196,56 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
           "/dashboard/order",
           "/dashboard/profile",
           "/dashboard/favorite",
+          "/dashboard/admin/overview",
+          "/dashboard/admin/transaction",
+          "/dashboard/admin/customer",
+          "/dashboard/admin/menu",
         ].includes(asPath) && (
           <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-2 py-1 z-999 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
             <div className="grid grid-cols-4 h-16">
-              {BOTTOM_NAV.map((item) => {
-                const isActive = asPath === item.href;
-                return (
-                  <Link
-                    href={item.href}
-                    key={item.name}
-                    className="flex flex-col items-center justify-center gap-1"
-                  >
-                    <div
-                      className={`p-2 rounded-xl transition-all ${isActive ? "bg-primary text-white scale-110" : "text-gray-400"}`}
-                    >
-                      {isActive ? item.activeIcon : item.icon}
-                    </div>
-                    <span
-                      className={`text-xs ${isActive ? "text-primary font-semibold" : "text-gray-400  font-normal "}`}
-                    >
-                      {item.name}
-                    </span>
-                  </Link>
-                );
-              })}
+              {user?.role === "admin"
+                ? BOTTOM_NAV_ADMIN.map((item) => {
+                    const isActive = asPath === item.href;
+                    return (
+                      <Link
+                        href={item.href}
+                        key={item.name}
+                        className="flex flex-col items-center justify-center gap-1"
+                      >
+                        <div
+                          className={`p-2 rounded-xl transition-all ${isActive ? "bg-primary text-white scale-110" : "text-gray-400"}`}
+                        >
+                          {isActive ? item.activeIcon : item.icon}
+                        </div>
+                        <span
+                          className={`text-xs ${isActive ? "text-primary font-semibold" : "text-gray-400  font-normal "}`}
+                        >
+                          {item.name}
+                        </span>
+                      </Link>
+                    );
+                  })
+                : BOTTOM_NAV.map((item) => {
+                    const isActive = asPath === item.href;
+                    return (
+                      <Link
+                        href={item.href}
+                        key={item.name}
+                        className="flex flex-col items-center justify-center gap-1"
+                      >
+                        <div
+                          className={`p-2 rounded-xl transition-all ${isActive ? "bg-primary text-white scale-110" : "text-gray-400"}`}
+                        >
+                          {isActive ? item.activeIcon : item.icon}
+                        </div>
+                        <span
+                          className={`text-xs ${isActive ? "text-primary font-semibold" : "text-gray-400  font-normal "}`}
+                        >
+                          {item.name}
+                        </span>
+                      </Link>
+                    );
+                  })}
             </div>
           </nav>
         )}

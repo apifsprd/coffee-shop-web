@@ -31,7 +31,11 @@ export default function Login() {
         );
         localStorage.setItem("token", response.token);
         localStorage.setItem("login_timestamp", now.toString());
-        router.push("/dashboard");
+        if (response.user.role === "admin") {
+          router.push("/dashboard//admin/overview");
+        } else {
+          router.push("/dashboard");
+        }
       } else {
         setError(response.message);
       }

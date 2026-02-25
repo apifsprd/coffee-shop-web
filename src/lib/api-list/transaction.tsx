@@ -14,6 +14,20 @@ export const getTransactionbyUser = async () => {
     };
   }
 };
+export const getAllTransaction = async () => {
+  try {
+    const response = await api.get({
+      url: "/all-transactions",
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
 
 export const getTransactionbyID = async ({ id }: { id: string }) => {
   try {
@@ -77,6 +91,27 @@ export const cancelTransaction = async ({
     const response = await api.post({
       url: `/cancel-transaction/${transactionID}`,
       data: {},
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+export const updateTransactionStatus = async ({
+  transactionID,
+  payload,
+}: {
+  transactionID: string;
+  payload: { status: string };
+}) => {
+  try {
+    const response = await api.post({
+      url: `/update-transaction-status/${transactionID}`,
+      data: payload,
       withToken: true,
     });
     return response;

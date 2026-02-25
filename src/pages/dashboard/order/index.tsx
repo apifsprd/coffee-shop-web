@@ -69,7 +69,7 @@ export default function Order() {
             <div className="grid grid-cols-1 gap-4">
               {data.map((item, index) => (
                 <div key={index}>
-                  <OrderList item={item} />
+                  <OrderList item={item} role="user" />
                 </div>
               ))}
             </div>
