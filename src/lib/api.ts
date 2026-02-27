@@ -76,7 +76,7 @@ const api = {
     withToken,
   }: {
     url: string;
-    data: FormData;
+    data: FormData | string | object;
     withToken?: boolean;
   }) =>
     fetch(process.env.NEXT_PUBLIC_API_URL + url, {
