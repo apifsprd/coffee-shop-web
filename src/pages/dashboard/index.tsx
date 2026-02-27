@@ -135,7 +135,7 @@ export default function Dashboard() {
       <div className="w-full flex flex-col gap-6 mt-4 pb-24 md:pb-12">
         {!loading ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
               {displayData.map((item: food, index: number) => (
                 <div
                   key={item.id || index}

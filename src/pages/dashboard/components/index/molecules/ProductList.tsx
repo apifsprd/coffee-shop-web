@@ -1,7 +1,9 @@
 import { ButtonBase, ButtonIcon } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { addToCart, removeFromCart, updateQtyCart } from "@/lib/api-list/cart";
+import { deleteFood } from "@/lib/api-list/food";
 import { likeFood, unlikeFood } from "@/lib/api-list/like";
+import { confirmAlert } from "@/lib/helper/swal";
 import formatRupiah from "@/utils/formatRupiah";
 import { Heart, Minus, Plus, Star, Trash } from "lucide-react";
 import { toast } from "next-toast";
@@ -54,7 +56,6 @@ export default function ProductList({
       toast.error("Action failed. Please try again.");
     }
   };
-
   const handleAddToCart = async () => {
     try {
       const response = await addToCart({ foodId: item.id });
@@ -66,7 +67,6 @@ export default function ProductList({
       toast.error("Failed to add to cart.");
     }
   };
-
   const handleUpdateQty = async (newQty: number) => {
     if (newQty < 1 || isUpdating) return;
     setIsUpdating(true);
@@ -82,7 +82,6 @@ export default function ProductList({
       setIsUpdating(false);
     }
   };
-
   const handleRemove = async () => {
     try {
       const response = await removeFromCart({ cartId: cartID });
@@ -94,13 +93,34 @@ export default function ProductList({
       toast.error("Remove failed.");
     }
   };
+  const handleRemoveMenu = async (foodID: string, itemName: string) => {
+    const result = await confirmAlert(
+      `Remove ${itemName}?`,
+      `Are you sure? You are about to change the role of ${itemName}. This action cannot be undone!`,
+      "Yes, change it!",
+      "No, cancel",
+    );
+    if (result.isConfirmed) {
+      try {
+        const response = await deleteFood({ foodID: foodID });
+        if (response.code === "200") {
+          onRefetch();
+          setTimeout(() => {
+            toast.success("The item has been removed.");
+          }, 500);
+        }
+      } catch (error: any) {
+        toast.error("Remove failed.");
+      }
+    }
+  };
 
   // --- RENDER LOGIC ---
 
   // Dashboard / Favorite Style (Vertical Card)
   if (variant === "add") {
     return (
-      <div className="bg-white rounded-2xl p-3 border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col gap-3 h-full">
+      <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
           <Image
             src={item.imageUrl || "/images/placeholder.png"}
@@ -108,6 +128,17 @@ export default function ProductList({
             fill
             className="object-cover"
           />
+          <button
+            onClick={handleLikeToggle}
+            className="absolute top-2 right-2 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+          >
+            <Heart
+              size={18}
+              className={
+                item.isLike ? "fill-red-500 text-red-500" : "text-gray-400"
+              }
+            />
+          </button>
         </div>
 
         <div className="flex flex-col flex-1 gap-1">
@@ -149,11 +180,10 @@ export default function ProductList({
       </div>
     );
   }
-
   // Cart Style (Horizontal Row)
   if (variant === "cart") {
     return (
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 flex items-center gap-4 shadow-sm">
+      <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="w-20 h-20 relative shrink-0 overflow-hidden rounded-xl">
           <Image
             src={item.imageUrl}
@@ -201,10 +231,9 @@ export default function ProductList({
       </div>
     );
   }
-
   if (variant === "admin") {
     return (
-      <div className="bg-white rounded-2xl p-3 border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col gap-3 h-full">
+      <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
           <Image
             src={item.imageUrl || "/images/placeholder.png"}
@@ -229,30 +258,29 @@ export default function ProductList({
               </span>
             </div>
           </div>
-
           <Text
             variant="span"
             className="text-xs text-gray-400 line-clamp-2 mb-2"
           >
             {item.description}
           </Text>
-
           <div className="mt-auto flex justify-between items-center">
             <Text variant="p" className="font-extrabold text-black">
               {formatRupiah(item.price)}
             </Text>
           </div>
-          <div className="mt-auto flex flex-row items-center gap-2">
-            <div className="flex flex-1">
+          <div className="w-full mt-2 flex flex-col justify-between items-center gap-2 sm:flex-row">
+            <div className="w-full flex flex-1">
               <ButtonBase
                 label="Remove"
                 type="button"
                 variant="danger"
                 size="md"
+                eventClick={() => handleRemoveMenu(item.id, item.name)}
                 fullWidth
               />
             </div>
-            <div className="flex flex-1">
+            <div className="w-full flex flex-1">
               <ButtonBase
                 label="Edit"
                 type="button"
