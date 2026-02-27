@@ -33,3 +33,24 @@ export const updateProfile = async ({ payload }: { payload: Profile }) => {
     };
   }
 };
+export const updateUserRole = async ({
+  userID,
+  payload,
+}: {
+  userID: string;
+  payload: { role: string };
+}) => {
+  try {
+    const response = await api.post({
+      url: `/update-user-role/${userID}`,
+      data: payload,
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};

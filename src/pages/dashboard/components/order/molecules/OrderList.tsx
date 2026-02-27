@@ -70,7 +70,7 @@ export default function OrderList({
   };
 
   return (
-    <div className="group p-4 md:p-6 border border-gray-100 bg-white rounded-2xl flex flex-col gap-4 transition-all hover:shadow-lg hover:border-primary/20">
+    <div className="group p-4 md:p-6 border border-gray-100 bg-white rounded-2xl flex flex-col gap-4 transition-all hover:border-primary">
       {/* HEADER: Invoice & Status */}
       <div className="flex justify-between items-start md:items-center pb-3 border-b border-gray-50">
         <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">

@@ -4,6 +4,8 @@ import { getAllTransaction } from "@/lib/api-list/transaction";
 import { toast } from "next-toast";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import OrderList from "../components/order/molecules/OrderList";
+import { SearchInput } from "@/components/ui/input";
+import { order } from "@/lib/types/order";
 
 function Transaction() {
   const [data, setData] = useState([]);
@@ -11,6 +13,7 @@ function Transaction() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const loader = useRef(null);
   const itemsPerPage = 10;
@@ -43,18 +46,25 @@ function Transaction() {
     if (loading || !hasMore) return;
 
     setLoading(true);
-    // Simulasi loading sedikit agar UX terasa smooth
+
+    // Ambil dataset yang benar (apakah sedang mencari atau tidak)
+    const currentDataset = searchTerm
+      ? data.filter((item: order) =>
+          item.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
+      : data;
+
     setTimeout(() => {
-      const nextBatch = data.slice(0, (page + 1) * itemsPerPage);
+      const nextBatch = currentDataset.slice(0, (page + 1) * itemsPerPage);
       setDisplayData(nextBatch);
       setPage((prev) => prev + 1);
 
-      if (nextBatch.length >= data.length) {
+      if (nextBatch.length >= currentDataset.length) {
         setHasMore(false);
       }
       setLoading(false);
     }, 500);
-  }, [data, page, loading, hasMore]);
+  }, [data, page, loading, hasMore, searchTerm]);
 
   // Observer untuk mendeteksi element di paling bawah
   useEffect(() => {
@@ -81,6 +91,25 @@ function Transaction() {
   }, [loadMoreItems, hasMore]);
 
   useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      // 1. Filter data berdasarkan invoice (atau field lain seperti nama jika ada)
+      const filtered = data.filter((item: order) =>
+        item.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+      // 2. Reset Page dan DisplayData untuk hasil pencarian
+      setPage(1);
+      const initialBatch = filtered.slice(0, itemsPerPage);
+      setDisplayData(initialBatch);
+
+      // 3. Update status hasMore berdasarkan hasil filter
+      setHasMore(initialBatch.length < filtered.length);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, data]);
+
+  useEffect(() => {
     document.title = "Indo Cafe n Resto | Transaction";
     getData();
   }, []);
@@ -97,12 +126,16 @@ function Transaction() {
             >
               Transaction
             </Text>
-            <p className="text-sm text-gray-500 md:hidden">
+            <p className="text-sm text-gray-500 ">
               {data.length} Total Transaction(s)
             </p>
           </div>
-          <div className="hidden md:flex bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/20">
-            {data.length} Transaction(s)
+          <div>
+            <SearchInput
+              placeholder="Search Invoice..."
+              onChangeText={(text) => setSearchTerm(text)}
+              label=""
+            />
           </div>
         </div>
 

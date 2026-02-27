@@ -5,71 +5,81 @@ import CustomerCardList from "./components/customer/molecules/CustomerCardList";
 import { SearchInput } from "@/components/ui/input";
 import { getAllUser } from "@/lib/api-list/user";
 import { User } from "@/lib/types/auth";
+import { ButtonBase } from "@/components/ui/Button";
 
-const ITEMS_PER_PAGE = 8; // Jumlah data per "load"
+const ITEMS_PER_PAGE = 8;
 
 function Customer() {
-  // 1. STATES
-  const [masterData, setMasterData] = useState<User[]>([]); // Data asli dari API
-  const [displayData, setDisplayData] = useState<User[]>([]); // Data yang ditampilkan (sudah difilter & dipotong)
+  const [masterData, setMasterData] = useState<User[]>([]);
+  const [displayData, setDisplayData] = useState<User[]>([]);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("all");
+  const [triggerRefresh, setTriggerRefresh] = useState("");
 
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // 2. FETCH DATA
-  const getCustomers = async () => {
-    try {
-      const response = await getAllUser();
-      if (response.code === "200") {
-        setMasterData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching customers:", error);
-    }
+  const handleRefreshData = () => {
+    setTriggerRefresh(Math.random().toString());
   };
 
   useEffect(() => {
     document.title = "Indo Cafe n Resto | Customers";
-    getCustomers();
-  }, []);
+    const getCustomers = async (category?: string) => {
+      try {
+        const response = await getAllUser();
+        if (response.code === "200") {
+          const sorted = response.data.sort((a: User, b: User) => {
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+            return nameA.localeCompare(nameB);
+          });
+          const customer = sorted.filter((item: User) => item.role === "user");
+          const admin = sorted.filter((item: User) => item.role === "admin");
 
-  // 3. LOGIKA FILTER & SLICE (Infinite Scroll)
+          if (category === "customer") {
+            setMasterData(customer);
+          } else if (category === "admin") {
+            setMasterData(admin);
+          } else {
+            setMasterData(sorted);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+    getCustomers(category);
+  }, [category, triggerRefresh]);
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      // Filter dulu dari Master Data
       const filtered = masterData.filter(
         (item: User) =>
           item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.email.toLowerCase().includes(searchTerm.toLowerCase()),
       );
-
-      // Ambil sebagian data menggunakan slice (mirip splice tapi tidak merusak array asli)
-      // Kita ambil dari index 0 sampai visibleCount
       const slicedData = filtered.slice(0, visibleCount);
-
       setDisplayData(slicedData);
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, masterData, visibleCount]);
 
-  // Reset visibleCount saat user mengetik agar scroll mulai dari awal lagi
   useEffect(() => {
-    setVisibleCount(ITEMS_PER_PAGE);
+    const slicedData = () => {
+      setVisibleCount(ITEMS_PER_PAGE);
+    };
+    slicedData();
   }, [searchTerm]);
 
-  // 4. INFINITE SCROLL OBSERVER
   const lastElementRef = useCallback((node: HTMLDivElement) => {
     if (observer.current) observer.current.disconnect();
-
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        // Jika user melihat elemen terakhir, tambah jumlah data yang ditampilkan
         setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
       }
     });
-
     if (node) observer.current.observe(node);
   }, []);
 
@@ -88,7 +98,7 @@ function Customer() {
             </Text>
           </div>
 
-          <div>
+          <div className="flex flex-row gapp-4">
             <SearchInput
               placeholder="Search customer..."
               label=""
@@ -97,17 +107,49 @@ function Customer() {
           </div>
         </div>
 
+        <div className="flex flex-row gap-4">
+          <ButtonBase
+            label="All"
+            shape="pill"
+            size="md"
+            type="button"
+            variant={category === "all" ? "primary" : "secondary"}
+            eventClick={() => {
+              setCategory("all");
+            }}
+          />
+          <ButtonBase
+            label="Customer"
+            shape="pill"
+            size="md"
+            type="button"
+            variant={category === "customer" ? "primary" : "secondary"}
+            eventClick={() => {
+              setCategory("customer");
+            }}
+          />
+          <ButtonBase
+            label="Admin"
+            shape="pill"
+            size="md"
+            type="button"
+            variant={category === "admin" ? "primary" : "secondary"}
+            eventClick={() => {
+              setCategory("admin");
+            }}
+          />
+        </div>
+
         {/* CUSTOMER GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {displayData.length > 0 ? (
             displayData.map((customer, index) => {
-              // Jika ini elemen terakhir di displayData, pasang Ref Observer
               if (displayData.length === index + 1) {
                 return (
                   <div ref={lastElementRef} key={customer.id}>
                     <CustomerCardList
                       customer={customer}
-                      onUpdateRole={() => {}}
+                      onRefetch={handleRefreshData}
                     />
                   </div>
                 );
@@ -116,7 +158,7 @@ function Customer() {
                 <CustomerCardList
                   key={customer.id}
                   customer={customer}
-                  onUpdateRole={() => {}}
+                  onRefetch={handleRefreshData}
                 />
               );
             })

@@ -15,7 +15,9 @@
     "next-toast": "^1.0.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "sweetalert2": "^11.26.20",
+    "sweetalert2-react-content": "^5.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
