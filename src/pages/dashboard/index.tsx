@@ -103,7 +103,6 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      {/* SEARCH SECTION: Diperbaiki agar pas dengan header fixed di desktop & mobile */}
       <div className="w-full flex flex-col gap-4 sticky top-[64px] md:top-[72px] bg-gray-50/90 backdrop-blur-sm pt-4 pb-4 z-30">
         <div className="flex flex-row items-center gap-3">
           <div className="flex-1">

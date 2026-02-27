@@ -45,7 +45,6 @@ export const getTransactionbyID = async ({ id }: { id: string }) => {
 };
 
 // POST
-
 export const createTransaction = async (payload: object) => {
   try {
     const response = await api.post({

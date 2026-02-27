@@ -26,6 +26,7 @@ const VARIANTS: { [key: string]: string } = {
   outline: "bg-white text-black border border-black",
   outlinePrimary: "bg-white text-primary border border-primary",
   outlineDanger: "bg-white text-red-600 border border-red-600",
+  ghost: "bg-white text-black font-semibold",
 };
 
 function ButtonBase({

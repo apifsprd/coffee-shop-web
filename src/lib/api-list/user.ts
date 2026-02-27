@@ -1,6 +1,23 @@
 import api from "../api";
 import { Profile, User } from "../types/auth";
 
+// GET
+export const getAllUser = async () => {
+  try {
+    const response = await api.get({
+      url: "/all-user",
+      withToken: true,
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+// POST
 export const updateProfile = async ({ payload }: { payload: Profile }) => {
   try {
     const response = await api.post({
