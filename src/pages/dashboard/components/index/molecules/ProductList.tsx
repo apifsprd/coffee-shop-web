@@ -194,7 +194,7 @@ export default function ProductList({
   // Cart Style (Horizontal Row)
   if (variant === "cart") {
     return (
-      <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
+      <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-row gap-4 h-full">
         <div className="w-20 h-20 relative shrink-0 overflow-hidden rounded-xl">
           <Image
             src={item.imageUrl}
@@ -212,12 +212,12 @@ export default function ProductList({
             {formatRupiah(item.price)}
           </Text>
 
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-4 mt-2">
             <div className="flex items-center border border-gray-200 rounded-lg p-1">
               <button
                 disabled={qty <= 1 || isUpdating}
                 onClick={() => handleUpdateQty(qty - 1)}
-                className="p-1 hover:bg-gray-50 disabled:opacity-30"
+                className="p-2 hover:bg-gray-50 cursor-pointer disabled:opacity-30"
               >
                 <Minus size={14} />
               </button>
@@ -225,7 +225,7 @@ export default function ProductList({
               <button
                 disabled={isUpdating}
                 onClick={() => handleUpdateQty(qty + 1)}
-                className="p-1 hover:bg-gray-50"
+                className="p-2 hover:bg-gray-50 cursor-pointer disabled:opacity-30"
               >
                 <Plus size={14} />
               </button>
@@ -233,12 +233,13 @@ export default function ProductList({
           </div>
         </div>
 
-        <button
-          onClick={handleRemove}
-          className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-        >
-          <Trash size={20} />
-        </button>
+        <div>
+          <ButtonIcon
+            icon={<Trash size={20} className="text-red-500" />}
+            eventClick={handleRemove}
+            variant="danger"
+          />
+        </div>
       </div>
     );
   }

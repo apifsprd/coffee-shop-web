@@ -124,7 +124,7 @@ export default function Cart() {
             </div>
 
             {/* RIGHT: SUMMARY CARD */}
-            <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm sticky top-24">
+            <div className="bg-white p-6 rounded-3xl border border-gray-200 sticky top-24">
               <div className="flex items-center gap-2 mb-6 border-b border-gray-50 pb-4">
                 <Receipt size={20} className="text-gray-400" />
                 <Text variant="h6" className="font-bold text-gray-800">
@@ -180,9 +180,8 @@ export default function Cart() {
                 variant="primary"
                 fullWidth
                 shape="rounded"
-                className="py-4 font-bold shadow-lg shadow-orange-100"
                 eventClick={handleCheckout}
-                isDisabled={isSubmitting || !selectedPayment}
+                disabled={isSubmitting || !selectedPayment}
               />
               <Text
                 variant="p"
@@ -210,7 +209,6 @@ export default function Cart() {
             <ButtonBase
               label="View Menu"
               variant="primary"
-              className="px-10"
               eventClick={() => router.push("/dashboard")}
             />
           </div>

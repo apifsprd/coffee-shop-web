@@ -12,6 +12,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Calendar, Clock, ShoppingBag, ArrowRight } from "lucide-react";
 import DynamicSelect from "@/components/ui/DynamicSelect";
+import { confirmAlert } from "@/lib/helper/swal";
 
 const STATUS_OPTIONS = [
   { value: "success", label: "Success" },
@@ -36,20 +37,28 @@ export default function OrderList({
   );
 
   const handleCancelOrder = async (id: string) => {
-    if (!confirm("Are you sure you want to cancel this order?")) return;
-    setIsCancelling(true);
-    try {
-      const response = await cancelTransaction({ transactionID: id });
-      if (response.code === "200") {
-        toast.success("Order cancelled successfully");
-        if (onRefetch) onRefetch();
-      } else {
-        toast.error(response.errors?.[0]?.message || "Failed to cancel");
+    const result = await confirmAlert(
+      `Are you sure?`,
+      `Are you sure? You are about to cancel this order. This action cannot be undone!`,
+      "Yes",
+      "No",
+    );
+    if (result.isConfirmed) {
+      try {
+        const response = await cancelTransaction({ transactionID: id });
+        if (response.code === "200") {
+          if (onRefetch) onRefetch();
+          setTimeout(() => {
+            toast.success("Order cancelled successfully");
+          }, 500);
+        } else {
+          toast.error(response.errors?.[0]?.message || "Failed to cancel");
+        }
+      } catch (error: any) {
+        toast.error("An error occurred while cancelling.");
+      } finally {
+        setIsCancelling(false);
       }
-    } catch (error: any) {
-      toast.error("An error occurred while cancelling.");
-    } finally {
-      setIsCancelling(false);
     }
   };
 

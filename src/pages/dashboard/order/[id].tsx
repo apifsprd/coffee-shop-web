@@ -220,12 +220,12 @@ export default function OrderDetail() {
                   variant="primary"
                   fullWidth
                   shape="rounded"
-                  className="py-4 font-bold shadow-lg shadow-orange-100"
                   eventClick={handleUpdateProofPaymentURL}
-                  isDisabled={loading || !proofPaymentUrl}
+                  disabled={loading || !proofPaymentUrl}
                 />
               </>
-            ) : (
+            ) : transaction.status === "success" &&
+              transaction.proofPaymentUrl !== null ? (
               <div className="flex flex-col gap-3">
                 <Text variant="span" className="text-gray-400 text-sm italic">
                   Payment proof has been submitted:
@@ -242,6 +242,14 @@ export default function OrderDetail() {
                   Payment Verified
                 </div>
               </div>
+            ) : (
+              transaction.proofPaymentUrl === null && (
+                <div className="flex flex-col gap-3">
+                  <Text variant="span" className="text-gray-400 text-sm italic">
+                    No payment proof has been submitted
+                  </Text>
+                </div>
+              )
             )}
           </div>
         </div>
