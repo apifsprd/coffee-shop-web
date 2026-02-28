@@ -22,7 +22,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { getAllTransaction } from "@/lib/api-list/transaction";
-import { order, transaction_items } from "@/lib/types/order";
+import { order } from "@/lib/types/order";
 
 // 1. Registrasi Komponen Chart.js yang dibutuhkan
 ChartJS.register(
@@ -151,8 +151,10 @@ function Overview() {
           );
           setMenuByPrice(sortByPrice.slice(0, 5));
         }
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to get menu, please try again (error: an unknown error occurred)",
+        );
       }
     };
     fetchData();
@@ -174,8 +176,10 @@ function Overview() {
           setUser(customer);
           setAdmin(adminUsers);
         }
-      } catch (error: any) {
-        toast.error("Error fetching customers.");
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to get users, please try again (error: an unknown error occurred)",
+        );
       }
     };
     getCustomers();
@@ -184,15 +188,17 @@ function Overview() {
       try {
         const response = await getAllTransaction();
         if (response.code === "200") {
-          const sorted = response.data.sort((a, b) => {
+          const sorted = response.data.sort((a: order, b: order) => {
             return (
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             );
           });
           setTransaction(sorted);
         }
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to get transaction, please try again (error: an unknown error occurred)",
+        );
       }
     };
     getTransaction();

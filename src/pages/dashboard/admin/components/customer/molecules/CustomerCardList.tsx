@@ -1,14 +1,11 @@
-import Badge from "@/components/ui/Badge";
+import React from "react";
 import { ButtonBase } from "@/components/ui/Button";
-import DynamicSelect from "@/components/ui/DynamicSelect";
 import { Text } from "@/components/ui/Text";
 import { updateUserRole } from "@/lib/api-list/user";
 import { confirmAlert } from "@/lib/helper/swal";
 import { User } from "@/lib/types/auth";
-import { Mail, Phone, ShieldCheck, User2 } from "lucide-react";
+import { Mail, Phone, User2 } from "lucide-react";
 import { toast } from "next-toast";
-import Image from "next/image";
-import React, { useState } from "react";
 
 function CustomerCardList({
   customer,
@@ -37,8 +34,10 @@ function CustomerCardList({
             toast.success("Role changed successfully");
           }, 500);
         }
-      } catch (error: any) {
-        toast.error("Failed to change role. please try again");
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to update user role, please try again (error: an unknown error occurred)",
+        );
       }
     }
   };

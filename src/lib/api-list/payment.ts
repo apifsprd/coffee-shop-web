@@ -7,10 +7,10 @@ export const getPaymentMethods = async () => {
       withToken: false,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };

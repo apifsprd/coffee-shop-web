@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import FoodForm from "@/components/modules/admin/menu/FoodForm";
 import { Text } from "@/components/ui/Text";
-import { createFood, getFoodbyID, updateFood } from "@/lib/api-list/food";
+import { getFoodbyID, updateFood } from "@/lib/api-list/food";
 import { foodForm } from "@/lib/types/food";
 import { toast } from "next-toast";
 import { useRouter } from "next/router";
@@ -71,8 +71,10 @@ export default function Edit() {
       } else {
         toast.error(response.errors?.[0]?.message || "Failed to create menu");
       }
-    } catch (error: any) {
-      toast.error("Failed to create menu");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to update menu, please try again (error: an unknown error occurred)",
+      );
     }
   };
 
@@ -91,8 +93,10 @@ export default function Edit() {
             imageUrl: response.data.imageUrl,
           });
         }
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to get food detail, please try again (error: an unknown error occurred)",
+        );
       }
     };
     getDetail(id as string);
@@ -104,7 +108,14 @@ export default function Edit() {
         <Text variant="h3">Edit Menu</Text>
         <FoodForm
           onSubmit={handleSubmit}
-          initialValue={initialValue as foodForm}
+          initialValue={{
+            name: initialValue.name,
+            description: initialValue.description,
+            price: initialValue.price,
+            priceDiscount: initialValue.priceDiscount,
+            ingredients: initialValue.ingredients,
+            imageUrl: initialValue.imageUrl,
+          }}
         />
       </div>
     </DashboardLayout>

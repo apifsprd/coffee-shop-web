@@ -6,6 +6,7 @@ import { Text } from "@/components/ui/Text";
 import { getFoods } from "@/lib/api-list/food";
 import ProductList from "@/pages/dashboard/components/index/molecules/ProductList";
 import { toast } from "next-toast";
+import { food } from "@/lib/types/food";
 
 function Menu() {
   const [menus, setMenu] = useState([]);
@@ -51,8 +52,10 @@ function Menu() {
         if (response.code === "200") {
           setMenu(response.data);
         }
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to get menu, please try again (error: an unknown error occurred)",
+        );
       } finally {
         setLoading(false);
       }

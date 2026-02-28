@@ -7,6 +7,5 @@ export const store = configureStore({
   },
 });
 
-// Tipe data untuk digunakan di Hooks
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

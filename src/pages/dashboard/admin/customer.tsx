@@ -146,7 +146,7 @@ function Customer() {
             displayData.map((customer, index) => {
               if (displayData.length === index + 1) {
                 return (
-                  <div ref={lastElementRef} key={customer.id}>
+                  <div ref={lastElementRef} key={index}>
                     <CustomerCardList
                       customer={customer}
                       onRefetch={handleRefreshData}
@@ -156,7 +156,7 @@ function Customer() {
               }
               return (
                 <CustomerCardList
-                  key={customer.id}
+                  key={index}
                   customer={customer}
                   onRefetch={handleRefreshData}
                 />

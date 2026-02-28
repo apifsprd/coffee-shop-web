@@ -7,10 +7,10 @@ export const getTransactionbyUser = async () => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -21,10 +21,10 @@ export const getAllTransaction = async () => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -36,10 +36,10 @@ export const getTransactionbyID = async ({ id }: { id: string }) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -53,10 +53,10 @@ export const createTransaction = async (payload: object) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -74,10 +74,10 @@ export const updateTransactionProofPayment = async ({
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -93,10 +93,10 @@ export const cancelTransaction = async ({
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -114,10 +114,10 @@ export const updateTransactionStatus = async ({
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };

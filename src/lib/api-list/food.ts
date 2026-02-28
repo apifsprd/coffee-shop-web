@@ -5,10 +5,10 @@ export const getFoods = async () => {
   try {
     const response = await api.get({ url: "/foods", withToken: true });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -19,10 +19,10 @@ export const getFoodbyID = async (foodId: string) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -30,10 +30,10 @@ export const getLikedFoods = async () => {
   try {
     const response = await api.get({ url: "/like-foods", withToken: true });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -47,10 +47,10 @@ export const createFood = async ({ payload }: { payload: foodForm }) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -73,10 +73,10 @@ export const updateFood = async ({
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -89,10 +89,10 @@ export const deleteFood = async ({ foodID }: { foodID: string }) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };

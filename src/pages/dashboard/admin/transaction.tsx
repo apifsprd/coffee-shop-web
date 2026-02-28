@@ -24,7 +24,7 @@ function Transaction() {
       setLoading(true);
       const response = await getAllTransaction();
       if (response.code === "200") {
-        const sorted = response.data.sort((a, b) => {
+        const sorted = response.data.sort((a: order, b: order) => {
           return (
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
@@ -34,8 +34,10 @@ function Transaction() {
         setDisplayData(sorted.slice(0, itemsPerPage));
         if (sorted.length <= itemsPerPage) setHasMore(false);
       }
-    } catch (error) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get transaction, please try again (error: an unknown error occurred)",
+      );
     } finally {
       setLoading(false);
     }
@@ -144,7 +146,7 @@ function Transaction() {
           {displayData.map((item, index) => (
             <OrderList
               item={item}
-              key={item.id || index}
+              key={index}
               role="admin"
               onRefetch={getData}
             />

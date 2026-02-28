@@ -5,10 +5,10 @@ export const getCart = async () => {
   try {
     const response = await api.get({ url: "/carts", withToken: true });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -24,10 +24,10 @@ export const addToCart = async ({ foodId }: { foodId: string }) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -48,10 +48,10 @@ export const updateQtyCart = async ({
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -66,10 +66,10 @@ export const removeFromCart = async ({ cartId }: { cartId: string }) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };

@@ -56,8 +56,8 @@ export default function Dashboard() {
       if (response.code === "200") {
         setData(response.data);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error("Failed to get menu. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -69,8 +69,8 @@ export default function Dashboard() {
       if (response.code === "200") {
         setCartCount(response.data.length);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error("Failed to get cart. Please try again.");
     }
   };
 
@@ -120,7 +120,6 @@ export default function Dashboard() {
               shape="square"
               type="link"
               href="/dashboard/cart"
-              className="shadow-md hover:shadow-lg transition-all"
             />
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[20px] h-[20px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full border-2 border-white shadow-sm">

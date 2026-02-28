@@ -7,10 +7,10 @@ export const login = async (payload: { email: string; password: string }) => {
     form.append("password", payload.password);
     const response = await api.post({ url: "/login", data: form });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -31,10 +31,10 @@ export const register = async (payload: {
     form.append("role", payload.role);
     const response = await api.post({ url: "/register", data: form });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -46,10 +46,10 @@ export const getUserData = async () => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      message: error.message,
+      message: "An unknown error occurred",
     };
   }
 };

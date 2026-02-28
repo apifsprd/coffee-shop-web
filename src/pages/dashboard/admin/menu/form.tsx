@@ -1,12 +1,10 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import FoodForm from "@/components/modules/admin/menu/FoodForm";
-import { ButtonBase } from "@/components/ui/Button";
-import { TextArea, TextInput } from "@/components/ui/form";
 import { Text } from "@/components/ui/Text";
 import { createFood } from "@/lib/api-list/food";
 import { toast } from "next-toast";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, use, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 function capitalize(str: string) {
   if (!str) return "";
@@ -69,8 +67,10 @@ export default function Form() {
       } else {
         toast.error(response.errors?.[0]?.message || "Failed to create menu");
       }
-    } catch (error: any) {
-      toast.error("Failed to create menu");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to create menu, please try again (error: an unknown error occurred)",
+      );
     }
   };
 

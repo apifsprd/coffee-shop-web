@@ -33,7 +33,7 @@ export default function Custom404() {
           {/* Action Button */}
           <Link
             href="/"
-            className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-orange-600 hover:shadow-orange-200 transition-all active:scale-95"
+            className="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-primary hover:shadow-primary transition-all active:scale-95"
           >
             Kembali ke Dashboard
           </Link>

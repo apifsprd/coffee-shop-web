@@ -12,6 +12,7 @@ import { createTransaction } from "@/lib/api-list/transaction";
 import { useRouter } from "next/router";
 import { ShoppingBasket, Receipt, CreditCard } from "lucide-react";
 import formatRupiah from "@/utils/formatRupiah";
+import { paymentMethod } from "@/lib/types/payment";
 
 export default function Cart() {
   const router = useRouter();
@@ -26,8 +27,10 @@ export default function Cart() {
       if (response.code === "200") {
         setData(response.data);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get cart, please try again (error: an unknown error occurred)",
+      );
     }
   };
 
@@ -51,15 +54,17 @@ export default function Cart() {
     try {
       const response = await getPaymentMethods();
       if (response.code === "200") {
-        const options = response.data.map((item: any) => ({
+        const options = response.data.map((item: paymentMethod) => ({
           label: item.name,
           value: item.id,
           image: item.imageUrl,
         }));
         setPaymentMethods(options);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get payment methods, please try again (error: an unknown error occurred)",
+      );
     }
   };
 
@@ -82,8 +87,10 @@ export default function Cart() {
         toast.success("Order created successfully!");
         router.push(`/dashboard/order`);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to create order");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to create transaction, please try again (error: an unknown error occurred)",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -170,7 +177,9 @@ export default function Cart() {
                   options={paymentMethods}
                   label=""
                   placeholder="Choose how to pay"
-                  onChange={(selected) => setSelectedPayment(selected)}
+                  onChange={(selected: string | number) =>
+                    setSelectedPayment(selected as string)
+                  }
                   selectedValue={selectedPayment}
                 />
               </div>
@@ -187,7 +196,8 @@ export default function Cart() {
                 variant="p"
                 className="text-[10px] text-gray-400 text-center mt-4 italic"
               >
-                By clicking "Checkout Now", you agree to our Terms & Conditions.
+                By clicking &quot;Checkout Now&quot;, you agree to our Terms &
+                Conditions.
               </Text>
             </div>
           </div>
@@ -204,7 +214,7 @@ export default function Cart() {
               variant="p"
               className="text-gray-500 mt-2 mb-8 text-center px-6"
             >
-              Looks like you haven't added anything to your cart yet.
+              Looks like you havent added anything to your cart yet.
             </Text>
             <ButtonBase
               label="View Menu"

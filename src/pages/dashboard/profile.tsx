@@ -43,8 +43,8 @@ export default function Profile() {
       } else {
         toast.error(response.errors?.[0]?.message || "Update failed");
       }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong");
+    } catch (error: unknown) {
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -101,6 +101,7 @@ export default function Profile() {
               inputOnChange={(e) =>
                 setForms({ ...forms, name: e.target.value })
               }
+              inputPlaceholder=""
             />
 
             <TextInput
@@ -112,6 +113,7 @@ export default function Profile() {
               inputOnChange={(e) =>
                 setForms({ ...forms, email: e.target.value })
               }
+              inputPlaceholder=""
             />
 
             <TextInput
@@ -123,6 +125,7 @@ export default function Profile() {
               inputOnChange={(e) =>
                 setForms({ ...forms, phoneNumber: e.target.value })
               }
+              inputPlaceholder=""
             />
 
             {isEditMode && (
@@ -134,6 +137,7 @@ export default function Profile() {
                 inputOnChange={(e) =>
                   setForms({ ...forms, profilePictureUrl: e.target.value })
                 }
+                inputPlaceholder=""
               />
             )}
 
@@ -147,8 +151,7 @@ export default function Profile() {
                     eventClick={handleUpdateProfile}
                     fullWidth
                     shape="rounded"
-                    className="py-3 font-bold shadow-md shadow-orange-100"
-                    isDisabled={loading}
+                    disabled={loading}
                   />
                   <ButtonBase
                     label="Cancel"
@@ -156,7 +159,6 @@ export default function Profile() {
                     eventClick={() => setIsEditMode(false)}
                     fullWidth
                     shape="rounded"
-                    className="py-3"
                   />
                 </>
               ) : (
@@ -167,7 +169,6 @@ export default function Profile() {
                     eventClick={() => setIsEditMode(true)}
                     fullWidth
                     shape="rounded"
-                    className="py-3 font-bold"
                   />
                   <div className="pt-4 mt-4 border-t border-gray-100">
                     <ButtonBase
@@ -176,7 +177,6 @@ export default function Profile() {
                       eventClick={handleLogout}
                       fullWidth
                       shape="rounded"
-                      className="py-3 font-bold border-2"
                     />
                   </div>
                 </>

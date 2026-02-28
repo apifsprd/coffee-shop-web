@@ -10,7 +10,7 @@ import formatRupiah from "@/utils/formatRupiah";
 import { toast } from "next-toast";
 import Image from "next/image";
 import React, { useState } from "react";
-import { Calendar, Clock, ShoppingBag, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ShoppingBag } from "lucide-react";
 import DynamicSelect from "@/components/ui/DynamicSelect";
 import { confirmAlert } from "@/lib/helper/swal";
 
@@ -54,8 +54,10 @@ export default function OrderList({
         } else {
           toast.error(response.errors?.[0]?.message || "Failed to cancel");
         }
-      } catch (error: any) {
-        toast.error("An error occurred while cancelling.");
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to cancel transaction, please try again (error: an unknown error occurred)",
+        );
       } finally {
         setIsCancelling(false);
       }
@@ -203,7 +205,6 @@ export default function OrderList({
                 type="button"
                 eventClick={() => handleChangeStatus(item.id)}
                 variant="primary"
-                className="w-full md:w-auto px-8 shadow-md shadow-primary/20"
               />
             </div>
           )
@@ -215,7 +216,6 @@ export default function OrderList({
                 type="link"
                 href={`/dashboard/order/rating/${item.id}`}
                 variant="outlinePrimary"
-                className="flex-1 md:flex-none px-6 text-xs font-bold"
               />
             )}
             {item.status === "pending" && (
@@ -224,8 +224,7 @@ export default function OrderList({
                 type="button"
                 variant="outlineDanger"
                 eventClick={() => handleCancelOrder(item.id)}
-                className="flex-1 md:flex-none px-6 text-xs font-bold"
-                isDisabled={isCancelling}
+                disabled={isCancelling}
               />
             )}
             <ButtonBase
@@ -233,7 +232,6 @@ export default function OrderList({
               type="link"
               href={`/dashboard/order/${item.id}`}
               variant="primary"
-              className="flex-1 md:flex-none px-10 text-xs font-bold shadow-lg shadow-primary/10"
             />
           </div>
         )}

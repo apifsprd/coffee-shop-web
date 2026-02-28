@@ -54,8 +54,10 @@ export default function ProductList({
         );
         onRefetch();
       }
-    } catch (error: any) {
-      toast.error("Action failed. Please try again.");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to like menu, please try again (error: an unknown error occurred)",
+      );
     }
   };
   const handleAddToCart = async () => {
@@ -65,8 +67,10 @@ export default function ProductList({
         toast.success("Added to cart!");
         onRefetch();
       }
-    } catch (error: any) {
-      toast.error("Failed to add to cart.");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to add to cart, please try again (error: an unknown error occurred)",
+      );
     }
   };
   const handleUpdateQty = async (newQty: number) => {
@@ -78,8 +82,10 @@ export default function ProductList({
         setQty(newQty);
         onRefetch();
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to update cart, please try again (error: an unknown error occurred)",
+      );
     } finally {
       setIsUpdating(false);
     }
@@ -91,8 +97,10 @@ export default function ProductList({
         toast.success("Item removed");
         onRefetch();
       }
-    } catch (error: any) {
-      toast.error("Remove failed.");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed remove item, please try again (error: an unknown error occurred)",
+      );
     }
   };
   const handleRemoveMenu = async (foodID: string, itemName: string) => {
@@ -111,8 +119,10 @@ export default function ProductList({
             toast.success("The item has been removed.");
           }, 500);
         }
-      } catch (error: any) {
-        toast.error("Remove failed.");
+      } catch (error: unknown) {
+        toast.error(
+          "Failed to remove menu, please try again (error: an unknown error occurred)",
+        );
       }
     }
   };
@@ -184,7 +194,6 @@ export default function ProductList({
               shape="circle"
               icon={<Plus size={18} />}
               eventClick={handleAddToCart}
-              className="scale-90"
             />
           </div>
         </div>

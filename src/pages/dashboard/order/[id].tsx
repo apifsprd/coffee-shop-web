@@ -34,8 +34,10 @@ export default function OrderDetail() {
           setProofPaymentUrl(response.data.proofPaymentUrl);
         }
       }
-    } catch (error: any) {
-      toast.error("Failed to load order details");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get transaction, please try again (error: an unknown error occurred)",
+      );
     }
   };
 
@@ -54,8 +56,10 @@ export default function OrderDetail() {
         toast.success("Payment proof updated successfully!");
         getDetailTransaction(); // Refresh data
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to update proof of payment, please try again (error: an unknown error occurred)",
+      );
     } finally {
       setLoading(false);
     }

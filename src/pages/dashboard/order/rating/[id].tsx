@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/Text";
 import { createRating } from "@/lib/api-list/rating";
 import { getTransactionbyID } from "@/lib/api-list/transaction";
 import { order } from "@/lib/types/order";
-import { Star, Utensils } from "lucide-react";
+import { Star } from "lucide-react";
 import { toast } from "next-toast";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -24,7 +24,7 @@ function Rating() {
   const updateReview = (
     foodId: string,
     field: "rating" | "comment",
-    value: any,
+    value: number | string,
   ) => {
     setReviews((prev) => ({
       ...prev,
@@ -42,8 +42,10 @@ function Rating() {
       if (response.code === "200") {
         setTransaction(response.data);
       }
-    } catch (error: any) {
-      toast.error("Failed to load transaction data");
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get transaction, please try again (error: an unknown error occurred)",
+      );
     }
   };
 
@@ -67,9 +69,9 @@ function Rating() {
 
       toast.success("Thank you! Your reviews have been submitted.");
       router.push("/dashboard/order");
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error(
-        error.message || "Failed to submit some reviews. Please try again.",
+        "Failed to submit review, please try again (error: an unknown error occurred)",
       );
     } finally {
       setIsSubmitting(false);
@@ -171,16 +173,15 @@ function Rating() {
             variant="primary"
             fullWidth
             shape="rounded"
-            className="py-4 font-bold shadow-xl shadow-orange-100"
             eventClick={handleSubmit}
-            isDisabled={isSubmitting}
+            disabled={isSubmitting}
           />
           <ButtonBase
             label="Maybe Later"
             variant="ghost"
             fullWidth
             eventClick={() => router.back()}
-            isDisabled={isSubmitting}
+            disabled={isSubmitting}
           />
         </div>
       </div>

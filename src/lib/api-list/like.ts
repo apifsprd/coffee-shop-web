@@ -11,10 +11,10 @@ export const likeFood = async (foodId: string) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
-      code: "500",
-      message: "Failed to like product, please try again.",
+      success: false,
+      message: "An unknown error occurred",
     };
   }
 };
@@ -29,10 +29,10 @@ export const unlikeFood = async (foodId: string) => {
       withToken: true,
     });
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
-      code: "500",
-      message: "Failed to unlike product, please try again.",
+      success: false,
+      message: "An unknown error occurred",
     };
   }
 };

@@ -20,7 +20,7 @@ export default function Favorite() {
       if (response.code === "200") {
         setData(response.data);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error("Failed to fetch favorites. Please try again.");
     } finally {
       setLoading(false);

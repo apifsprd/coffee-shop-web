@@ -7,6 +7,7 @@ import OrderList from "../components/order/molecules/OrderList";
 import { SpinnerLoading } from "@/components/ui/loading";
 import { ClipboardList } from "lucide-react";
 import Link from "next/link";
+import { order } from "@/lib/types/order";
 
 export default function Order() {
   const [data, setData] = useState([]);
@@ -17,7 +18,7 @@ export default function Order() {
     try {
       const response = await getTransactionbyUser();
       if (response.code === "200") {
-        const sorted = response.data.sort((a: any, b: any) => {
+        const sorted = response.data.sort((a: order, b: order) => {
           const dateA = new Date(a.createdAt);
           const dateB = new Date(b.createdAt);
           return dateB.getTime() - dateA.getTime();
@@ -26,8 +27,10 @@ export default function Order() {
       } else {
         toast.error(response.message);
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      toast.error(
+        "Failed to get transaction, please try again (error: an unknown error occurred)",
+      );
     } finally {
       setLoading(false);
     }
