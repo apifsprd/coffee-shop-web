@@ -1,11 +1,11 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import { getFoods } from "@/lib/api-list/food";
-import { food } from "@/lib/types/food";
-import { toast } from "next-toast";
-import React, { useEffect, useState, useRef, useCallback } from "react"; // Tambahkan useRef & useCallback
-import ProductList from "../components/index/molecules/ProductList";
-import { Text } from "@/components/ui/Text";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ButtonBase } from "@/components/ui/Button";
 import { SearchInput } from "@/components/ui/input";
+import { Text } from "@/components/ui/Text";
+import { getFoods } from "@/lib/api-list/food";
+import ProductList from "@/pages/dashboard/components/index/molecules/ProductList";
+import { toast } from "next-toast";
 
 function Menu() {
   const [menus, setMenu] = useState([]);
@@ -13,21 +13,17 @@ function Menu() {
   const [triggerRefresh, setTriggerRefresh] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(10);
-  const [loading, setLoading] = useState(false); // State untuk loading indicator
+  const [loading, setLoading] = useState(false);
 
-  // 1. Tambahkan ref untuk observer
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // 2. Buat callback ref untuk elemen terakhir dalam list
   const lastElementRef = useCallback(
     (node: HTMLDivElement) => {
-      if (loading) return; // Jangan trigger jika sedang loading
+      if (loading) return;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        // Jika elemen terakhir terlihat di layar
         if (entries[0].isIntersecting) {
-          // Cek apakah masih ada data yang bisa dimuat
           const totalAvailable = searchTerm
             ? filteredData.length
             : menus.length;
@@ -85,26 +81,34 @@ function Menu() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col justify-between items-start gap-2 sm:flex-row">
           <div className="flex flex-col gap-1">
-            <Text variant="h4">Menu</Text>
+            <Text variant="h3">Menu</Text>
             <p className="text-sm text-gray-500">
               Manage your menu, currently {menus.length} items
             </p>
           </div>
-          <div className="w-full sm:w-auto">
-            <SearchInput
-              label=""
-              placeholder="Search"
-              onChangeText={(keyword: string) => {
-                setSearchTerm(keyword);
-              }}
-            />
+          <div className="w-full flex flex-col gap-2 sm:w-auto sm:flex-row">
+            <div className="flex flex-1">
+              <ButtonBase
+                label="Create New Menu"
+                type="link"
+                href="/dashboard/admin/menu/form"
+              />
+            </div>
+            <div className="flex">
+              <SearchInput
+                label=""
+                placeholder="Search"
+                onChangeText={(keyword: string) => {
+                  setSearchTerm(keyword);
+                }}
+              />
+            </div>
           </div>
         </div>
 
         {/* LIST GRID */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
           {displayData.map((item: food, index: number) => {
-            // Cek apakah ini item terakhir yang ditampilkan
             const isLastElement = displayData.length === index + 1;
 
             return (
@@ -122,8 +126,6 @@ function Menu() {
             );
           })}
         </div>
-
-        {/* 3. Loading Indicator saat scroll */}
         {visibleCount < (searchTerm ? filteredData.length : menus.length) && (
           <div className="py-8 flex justify-center">
             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>

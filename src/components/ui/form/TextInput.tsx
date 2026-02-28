@@ -4,7 +4,7 @@ import React, { useState } from "react";
 interface TextInputProps {
   label: string;
   InputType: string;
-  inputValue: string;
+  inputValue: string | number;
   inputOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputPlaceholder: string;
   isDisabled?: boolean;
@@ -26,7 +26,7 @@ export default function TextInput({
 }: TextInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2">
       <label htmlFor={label?.toLowerCase()} className={labelStyle}>
         {label}
         {mandatory && <span className="text-red-500"> *</span>}
@@ -46,7 +46,7 @@ export default function TextInput({
           onChange={inputOnChange}
           placeholder={inputPlaceholder}
           disabled={isDisabled}
-          className={`${isDisabled ? "bg-gray-100" : "bg-white"} border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
+          className={`${isDisabled ? "bg-gray-100" : "bg-white"} border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-50 block w-full p-2.5`}
         />
         {InputType === "password" && (
           <button

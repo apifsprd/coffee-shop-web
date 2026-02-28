@@ -1,5 +1,5 @@
 import api from "../api";
-import { food } from "../types/food";
+import { foodForm } from "../types/food";
 
 export const getFoods = async () => {
   try {
@@ -15,7 +15,7 @@ export const getFoods = async () => {
 export const getFoodbyID = async (foodId: string) => {
   try {
     const response = await api.get({
-      url: `/api/v1/foods/${foodId}`,
+      url: `/foods/${foodId}`,
       withToken: true,
     });
     return response;
@@ -39,7 +39,7 @@ export const getLikedFoods = async () => {
 };
 
 // POST
-export const createFood = async ({ payload }: { payload: food }) => {
+export const createFood = async ({ payload }: { payload: foodForm }) => {
   try {
     const response = await api.post({
       url: `/create-food`,

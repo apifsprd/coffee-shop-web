@@ -8,6 +8,7 @@ import formatRupiah from "@/utils/formatRupiah";
 import { Heart, Minus, Plus, Star, Trash } from "lucide-react";
 import { toast } from "next-toast";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 
 interface ProductProps {
@@ -34,6 +35,7 @@ export default function ProductList({
   cartID = "",
   cartQty = 0,
 }: ProductProps) {
+  const router = useRouter();
   const [qty, setQty] = useState(cartQty);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -149,12 +151,6 @@ export default function ProductList({
             >
               {item.name}
             </Text>
-            <div className="flex items-center gap-1 shrink-0">
-              <Star size={14} className="fill-yellow-400 text-yellow-400" />
-              <span className="text-xs font-medium text-gray-600">
-                {item.rating}
-              </span>
-            </div>
           </div>
 
           <Text
@@ -163,6 +159,21 @@ export default function ProductList({
           >
             {item.description}
           </Text>
+
+          <div className="flex flex-row items-center gap-2 shrink-0">
+            <div className="flex flex-row gap-1">
+              <Star size={14} className="fill-yellow-400 text-yellow-400" />
+              <span className="text-xs font-medium text-gray-600">
+                {item.rating}
+              </span>
+            </div>
+            <div className="flex flex-row gap-1">
+              <Heart size={14} className="fill-red-400 text-red-400" />
+              <span className="text-xs font-medium text-gray-600">
+                {item.totalLikes}
+              </span>
+            </div>
+          </div>
 
           <div className="mt-auto flex justify-between items-center">
             <Text variant="p" className="font-extrabold text-black">
@@ -251,12 +262,6 @@ export default function ProductList({
             >
               {item.name}
             </Text>
-            <div className="flex items-center gap-1 shrink-0">
-              <Star size={14} className="fill-yellow-400 text-yellow-400" />
-              <span className="text-xs font-medium text-gray-600">
-                {item.rating}
-              </span>
-            </div>
           </div>
           <Text
             variant="span"
@@ -264,6 +269,20 @@ export default function ProductList({
           >
             {item.description}
           </Text>
+          <div className="flex flex-row items-center gap-2 shrink-0">
+            <div className="flex flex-row gap-1">
+              <Star size={14} className="fill-yellow-400 text-yellow-400" />
+              <span className="text-xs font-medium text-gray-600">
+                {item.rating}
+              </span>
+            </div>
+            <div className="flex flex-row gap-1">
+              <Heart size={14} className="fill-red-400 text-red-400" />
+              <span className="text-xs font-medium text-gray-600">
+                {item.totalLikes}
+              </span>
+            </div>
+          </div>
           <div className="mt-auto flex justify-between items-center">
             <Text variant="p" className="font-extrabold text-black">
               {formatRupiah(item.price)}
@@ -287,6 +306,9 @@ export default function ProductList({
                 variant="primary"
                 size="md"
                 fullWidth
+                eventClick={() =>
+                  router.push(`/dashboard/admin/menu/${item.id}`)
+                }
               />
             </div>
           </div>

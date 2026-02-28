@@ -9,7 +9,16 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
-    { label, error, helperText, charLimit, className, value, ...props },
+    {
+      label,
+      error,
+      helperText,
+      charLimit,
+      className,
+      value,
+      mandatory,
+      ...props
+    },
     ref,
   ) => {
     const charCount = value ? String(value).length : 0;
@@ -17,8 +26,12 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className="flex flex-col w-full gap-1.5">
         {label && (
-          <label className="text-sm font-semibold text-gray-700 ml-1">
+          <label
+            htmlFor={label?.toLowerCase()}
+            className="block text-base font-semibold text-gray-700"
+          >
             {label}
+            {mandatory && <span className="text-red-500"> *</span>}
           </label>
         )}
 

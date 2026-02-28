@@ -59,7 +59,7 @@ const BOTTOM_NAV_ADMIN = [
   },
   {
     name: "Menu",
-    href: "/dashboard/admin/menu",
+    href: "/dashboard/admin/menu/list",
     icon: <Pizza size={22} />,
     activeIcon: <Pizza size={22} />,
   },
@@ -199,7 +199,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
           "/dashboard/admin/overview",
           "/dashboard/admin/transaction",
           "/dashboard/admin/customer",
-          "/dashboard/admin/menu",
+          "/dashboard/admin/menu/list",
         ].includes(asPath) && (
           <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-2 py-1 z-999 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
             <div className="grid grid-cols-4 h-16">
