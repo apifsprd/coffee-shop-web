@@ -46,11 +46,11 @@ export default function ProductList({
 
   const handleLikeToggle = async () => {
     try {
-      const action = item.isLike ? unlikeFood : likeFood;
-      const response = await action(item.id);
+      const action = item?.isLike ? unlikeFood : likeFood;
+      const response = await action(item?.id);
       if (response.code === "200") {
         toast.success(
-          item.isLike ? "Removed from favorites" : "Added to favorites",
+          item?.isLike ? "Removed from favorites" : "Added to favorites",
         );
         onRefetch();
       }
@@ -62,7 +62,7 @@ export default function ProductList({
   };
   const handleAddToCart = async () => {
     try {
-      const response = await addToCart({ foodId: item.id });
+      const response = await addToCart({ foodId: item?.id });
       if (response.code === "200") {
         toast.success("Added to cart!");
         onRefetch();
@@ -135,8 +135,8 @@ export default function ProductList({
       <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
           <Image
-            src={item.imageUrl || "/images/logo.png"}
-            alt={item.name}
+            src={item?.imageUrl || "/images/logo.png"}
+            alt={item?.name}
             fill
             className="object-cover"
           />
@@ -147,7 +147,7 @@ export default function ProductList({
             <Heart
               size={18}
               className={
-                item.isLike ? "fill-red-500 text-red-500" : "text-gray-400"
+                item?.isLike ? "fill-red-500 text-red-500" : "text-gray-400"
               }
             />
           </button>
@@ -159,7 +159,7 @@ export default function ProductList({
               variant="p"
               className="font-bold text-gray-900 line-clamp-1 truncate"
             >
-              {item.name}
+              {item?.name}
             </Text>
           </div>
 
@@ -167,27 +167,27 @@ export default function ProductList({
             variant="span"
             className="text-xs text-gray-400 line-clamp-2 mb-2"
           >
-            {item.description}
+            {item?.description}
           </Text>
 
           <div className="flex flex-row items-center gap-2 shrink-0">
             <div className="flex flex-row gap-1">
               <Star size={14} className="fill-yellow-400 text-yellow-400" />
               <span className="text-xs font-medium text-gray-600">
-                {item.rating}
+                {item?.rating}
               </span>
             </div>
             <div className="flex flex-row gap-1">
               <Heart size={14} className="fill-red-400 text-red-400" />
               <span className="text-xs font-medium text-gray-600">
-                {item.totalLikes}
+                {item?.totalLikes}
               </span>
             </div>
           </div>
 
           <div className="mt-auto flex justify-between items-center">
             <Text variant="p" className="font-extrabold text-black">
-              {formatRupiah(item.price)}
+              {formatRupiah(item?.price)}
             </Text>
             <ButtonIcon
               variant="primary"
@@ -206,8 +206,8 @@ export default function ProductList({
       <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-row gap-4 h-full">
         <div className="w-20 h-20 relative shrink-0 overflow-hidden rounded-xl">
           <Image
-            src={item.imageUrl || "/images/logo.png"}
-            alt={item.name}
+            src={item?.imageUrl || "/images/logo.png"}
+            alt={item?.name}
             fill
             className="object-cover"
           />
@@ -215,10 +215,10 @@ export default function ProductList({
 
         <div className="flex-1 min-w-0">
           <Text variant="p" className="font-bold text-gray-900 truncate">
-            {item.name}
+            {item?.name}
           </Text>
           <Text variant="p" className="text-black font-bold">
-            {formatRupiah(item.price)}
+            {formatRupiah(item?.price)}
           </Text>
 
           <div className="flex items-center gap-4 mt-2">
@@ -257,8 +257,8 @@ export default function ProductList({
       <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
           <Image
-            src={item.imageUrl || "/images/placeholder.png"}
-            alt={item.name}
+            src={item?.imageUrl || "/images/placeholder.png"}
+            alt={item?.name}
             fill
             className="object-cover"
           />
@@ -270,32 +270,32 @@ export default function ProductList({
               variant="p"
               className="font-bold text-gray-900 line-clamp-1 truncate"
             >
-              {item.name}
+              {item?.name}
             </Text>
           </div>
           <Text
             variant="span"
             className="text-xs text-gray-400 line-clamp-2 mb-2"
           >
-            {item.description}
+            {item?.description}
           </Text>
           <div className="flex flex-row items-center gap-2 shrink-0">
             <div className="flex flex-row gap-1">
               <Star size={14} className="fill-yellow-400 text-yellow-400" />
               <span className="text-xs font-medium text-gray-600">
-                {item.rating}
+                {item?.rating}
               </span>
             </div>
             <div className="flex flex-row gap-1">
               <Heart size={14} className="fill-red-400 text-red-400" />
               <span className="text-xs font-medium text-gray-600">
-                {item.totalLikes}
+                {item?.totalLikes}
               </span>
             </div>
           </div>
           <div className="mt-auto flex justify-between items-center">
             <Text variant="p" className="font-extrabold text-black">
-              {formatRupiah(item.price)}
+              {formatRupiah(item?.price)}
             </Text>
           </div>
           <div className="w-full mt-2 flex flex-col justify-between items-center gap-2 sm:flex-row">
@@ -305,7 +305,7 @@ export default function ProductList({
                 type="button"
                 variant="danger"
                 size="md"
-                eventClick={() => handleRemoveMenu(item.id, item.name)}
+                eventClick={() => handleRemoveMenu(item?.id, item?.name)}
                 fullWidth
               />
             </div>
@@ -317,7 +317,7 @@ export default function ProductList({
                 size="md"
                 fullWidth
                 eventClick={() =>
-                  router.push(`/dashboard/admin/menu/${item.id}`)
+                  router.push(`/dashboard/admin/menu/${item?.id}`)
                 }
               />
             </div>
