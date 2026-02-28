@@ -25,7 +25,7 @@ function CustomerCardList({
     if (result.isConfirmed) {
       try {
         const response = await updateUserRole({
-          userID: customer.id,
+          userID: customer?.id,
           payload: { role: newRole },
         });
         if (response.code === "200") {
@@ -49,8 +49,8 @@ function CustomerCardList({
           {/* {customer?.profilePictureUrl &&
           customer?.profilePictureUrl.trim() !== "" ? (
             // <Image
-            //   src={customer.profilePictureUrl}
-            //   alt={customer.name}
+            //   src={customer?.profilePictureUrl}
+            //   alt={customer?.name}
             //   fill
             //   className="object-cover"
             // />
@@ -63,15 +63,15 @@ function CustomerCardList({
 
         {/* INFO SECTION */}
         <div className="flex flex-1 flex-col justify-center items-center gap-2 w-full">
-          <Text variant="h3">{customer.name}</Text>
+          <Text variant="h3">{customer?.name}</Text>
 
           <div className="flex flex-row justify-start items-center gap-2">
             <Mail size={16} className="text-primary" />
-            <Text variant="p">{customer.email}</Text>
+            <Text variant="p">{customer?.email}</Text>
           </div>
           <div className="flex flex-row justify-start items-center gap-2">
             <Phone size={16} className="text-primary" />
-            <Text variant="p">{customer.phoneNumber}</Text>
+            <Text variant="p">{customer?.phoneNumber}</Text>
           </div>
           <div className="flex flex-row justify-start items-center gap-2">
             <ButtonBase
@@ -79,22 +79,22 @@ function CustomerCardList({
               shape="pill"
               size="md"
               type="button"
-              variant={customer.role === "admin" ? "primary" : "outline"}
+              variant={customer?.role === "admin" ? "primary" : "outline"}
               eventClick={() => {
-                handleChangeRole(customer.name, "admin");
+                handleChangeRole(customer?.name, "admin");
               }}
-              disabled={customer.role === "admin"}
+              disabled={customer?.role === "admin"}
             />
             <ButtonBase
               label="Customer"
               shape="pill"
               size="md"
               type="button"
-              variant={customer.role === "user" ? "primary" : "outline"}
+              variant={customer?.role === "user" ? "primary" : "outline"}
               eventClick={() => {
-                handleChangeRole(customer.name, "user");
+                handleChangeRole(customer?.name, "user");
               }}
-              disabled={customer.role === "user"}
+              disabled={customer?.role === "user"}
             />
           </div>
           <Text variant="span" className="text-gray-400">
