@@ -46,8 +46,8 @@ function CustomerCardList({
       <div className="flex flex-col items-center text-center gap-4">
         {/* AVATAR SECTION */}
         <div className="relative aspect-square w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-4 border-gray-50">
-          {customer.profilePictureUrl &&
-          customer.profilePictureUrl.trim() !== "" ? (
+          {/* {customer?.profilePictureUrl &&
+          customer?.profilePictureUrl.trim() !== "" ? (
             // <Image
             //   src={customer.profilePictureUrl}
             //   alt={customer.name}
@@ -57,7 +57,8 @@ function CustomerCardList({
             <User2 size={32} className="text-primary" />
           ) : (
             <User2 size={32} className="text-primary" />
-          )}
+          )} */}
+          <User2 size={32} className="text-primary" />
         </div>
 
         {/* INFO SECTION */}
