@@ -29,9 +29,9 @@ export default function OrderList({
   onRefetch?: () => void;
 }) {
   const [isCancelling, setIsCancelling] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(item.status);
+  const [selectedStatus, setSelectedStatus] = useState(item?.status);
 
-  const totalAmount = item.transaction_items.reduce(
+  const totalAmount = item?.transaction_items.reduce(
     (acc, curr) => acc + curr.price * curr.quantity,
     0,
   );
@@ -90,14 +90,14 @@ export default function OrderList({
               <ShoppingBag size={18} className="text-primary" />
             </div>
             <Text variant="span" className="font-bold text-gray-900 md:text-lg">
-              #{item.invoiceId}
+              #{item?.invoiceId}
             </Text>
           </div>
           <div className="flex items-center gap-3 text-gray-400 md:ml-3">
             <div className="flex items-center gap-1">
               <Calendar size={12} />
               <span className="text-[10px] md:text-xs font-medium">
-                {new Date(item.createdAt).toLocaleDateString("id-ID", {
+                {new Date(item?.createdAt).toLocaleDateString("id-ID", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
@@ -107,7 +107,7 @@ export default function OrderList({
             <div className="flex items-center gap-1">
               <Clock size={12} />
               <span className="text-[10px] md:text-xs font-medium">
-                {new Date(item.createdAt).toLocaleTimeString("id-ID", {
+                {new Date(item?.createdAt).toLocaleTimeString("id-ID", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
@@ -118,15 +118,15 @@ export default function OrderList({
         <Badge
           size="sm"
           variant={
-            item.status === "pending"
+            item?.status === "pending"
               ? "neutral"
-              : item.status === "success"
+              : item?.status === "success"
                 ? "success"
                 : "danger"
           }
           className="capitalize px-4 py-1.5 rounded-full text-[10px] md:text-xs font-bold"
         >
-          {item.status}
+          {item?.status}
         </Badge>
       </div>
 
@@ -135,7 +135,7 @@ export default function OrderList({
         {/* Horizontal Item Scroll */}
         <div className="flex-1 overflow-hidden">
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {item.transaction_items.map((food, index) => (
+            {item?.transaction_items.map((food, index) => (
               <div
                 key={index}
                 className="flex items-center gap-3 shrink-0 bg-gray-50/50 p-2 rounded-xl border border-gray-100 min-w-[160px]"
@@ -187,7 +187,7 @@ export default function OrderList({
       {/* FOOTER ACTIONS */}
       <div className="pt-2">
         {role === "admin" ? (
-          item.status === "pending" && (
+          item?.status === "pending" && (
             <div className="flex flex-col md:flex-row items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
               <div className="w-full md:w-64">
                 <DynamicSelect
@@ -203,34 +203,34 @@ export default function OrderList({
               <ButtonBase
                 label="Update Status"
                 type="button"
-                eventClick={() => handleChangeStatus(item.id)}
+                eventClick={() => handleChangeStatus(item?.id)}
                 variant="primary"
               />
             </div>
           )
         ) : (
           <div className="flex flex-wrap md:flex-nowrap justify-end items-center gap-3">
-            {item.status === "success" && (
+            {item?.status === "success" && (
               <ButtonBase
                 label="Review Menu"
                 type="link"
-                href={`/dashboard/order/rating/${item.id}`}
+                href={`/dashboard/order/rating/${item?.id}`}
                 variant="outlinePrimary"
               />
             )}
-            {item.status === "pending" && (
+            {item?.status === "pending" && (
               <ButtonBase
                 label={isCancelling ? "Processing..." : "Cancel Order"}
                 type="button"
                 variant="outlineDanger"
-                eventClick={() => handleCancelOrder(item.id)}
+                eventClick={() => handleCancelOrder(item?.id)}
                 disabled={isCancelling}
               />
             )}
             <ButtonBase
-              label={item.status === "pending" ? "Pay Now" : "Details"}
+              label={item?.status === "pending" ? "Pay Now" : "Details"}
               type="link"
-              href={`/dashboard/order/${item.id}`}
+              href={`/dashboard/order/${item?.id}`}
               variant="primary"
             />
           </div>
