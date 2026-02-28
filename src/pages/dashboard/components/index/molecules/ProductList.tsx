@@ -135,7 +135,7 @@ export default function ProductList({
       <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-col gap-3 h-full">
         <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
           <Image
-            src={item.imageUrl || "/images/placeholder.png"}
+            src={item.imageUrl || "/images/logo.png"}
             alt={item.name}
             fill
             className="object-cover"
@@ -206,7 +206,7 @@ export default function ProductList({
       <div className="bg-white rounded-2xl p-3 border border-gray-100  transition-all flex flex-row gap-4 h-full">
         <div className="w-20 h-20 relative shrink-0 overflow-hidden rounded-xl">
           <Image
-            src={item.imageUrl}
+            src={item.imageUrl || "/images/logo.png"}
             alt={item.name}
             fill
             className="object-cover"
