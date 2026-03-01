@@ -30,7 +30,6 @@ The visual design and layout of this project are inspired by several modern coff
 
 ## 🛠️ Library
 
-- **Cookie:** [cookie](https://www.npmjs.com/package/cookie)
 - **Lucide Icons:** [lucide-react](https://lucide.dev/)
 - **SweetAlert2:** [sweetalert2](sweetalert2.github.io/#download)
 - **React Redux:** [react-redux](https://react-redux.js.org/)
