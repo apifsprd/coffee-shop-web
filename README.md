@@ -26,13 +26,15 @@ The visual design and layout of this project are inspired by several modern coff
 
 - **Frontend:** [Next.js 16](https://nextjs.org/) (Pages Router)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **API:** [Reqres.in](https://reqres.in)
 - **Deploy:** [Vercel](http://vercel.com/)
 
 ## 🛠️ Library
 
-- **Cookie:** [cookie](https://www.npmjs.com/package/cookie)
 - **Lucide Icons:** [lucide-react](https://lucide.dev/)
+- **SweetAlert2:** [sweetalert2](sweetalert2.github.io/#download)
+- **React Redux:** [react-redux](https://react-redux.js.org/)
+- **Next Toast:** [next-toast](https://toast.rimubhai.com/)
+- **React Chartjs:** [react-chartjs2](http://react-chartjs-2.js.org/)
 
 ## 📦 Installation & Setup
 
