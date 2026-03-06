@@ -10,10 +10,11 @@ import { toast } from "next-toast";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useMemo } from "react";
 import OrderSumList from "../components/order/molecules/OrderSumList";
-import { TextInput } from "@/components/ui/form";
 import { ButtonBase } from "@/components/ui/Button";
 import { ArrowLeft, CreditCard, ReceiptText, CalendarDays } from "lucide-react";
 import formatRupiah from "@/utils/formatRupiah";
+import FileInput from "@/components/ui/input/FileInput";
+import { uploadFile } from "@/lib/api-list/fileUpload";
 
 export default function OrderDetail() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function OrderDetail() {
 
   const [transaction, setTransaction] = useState<order>({} as order);
   const [proofPaymentUrl, setProofPaymentUrl] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const getDetailTransaction = async () => {
@@ -40,26 +42,39 @@ export default function OrderDetail() {
       );
     }
   };
-
-  const handleUpdateProofPaymentURL = async () => {
-    if (!proofPaymentUrl) {
-      return toast.error("Please provide a payment proof URL");
+  const handleUpdateProofPaymentURL = async (file?: File) => {
+    if (!file) {
+      return toast.error("Please provide a payment proof");
     }
 
     setLoading(true);
+
     try {
-      const response = await updateTransactionProofPayment({
-        transactionID: id as string,
-        payload: { proofPaymentUrl },
-      });
-      if (response.code === "200") {
-        toast.success("Payment proof updated successfully!");
-        getDetailTransaction(); // Refresh data
+      const response = await uploadFile({ file });
+      if (response.code === "200" || response.code === 200) {
+        const result = await updateTransactionProofPayment({
+          transactionID: String(id),
+          payload: { proofPaymentUrl: response.url },
+        });
+
+        if (result.code === "200" || result.code === 200) {
+          toast.success("Proof of payment updated successfully!");
+
+          if (typeof getDetailTransaction === "function") {
+            getDetailTransaction();
+          }
+        } else {
+          throw new Error(
+            result.message || "Failed to update transaction record",
+          );
+        }
+      } else {
+        throw new Error(response.message || "Failed to upload file to server");
       }
     } catch (error: unknown) {
-      toast.error(
-        "Failed to update proof of payment, please try again (error: an unknown error occurred)",
-      );
+      console.error("Upload Error:", error);
+      const errorMessage = "An unknown error occurred";
+      toast.error(`Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -199,7 +214,7 @@ export default function OrderDetail() {
             Payment Information
           </p>
           <div className="bg-white p-6 rounded-3xl border border-gray-200 flex flex-col gap-6">
-            {transaction.status === "pending" ? (
+            {transaction.proofPaymentUrl === null ? (
               <>
                 <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100">
                   <Text
@@ -210,25 +225,22 @@ export default function OrderDetail() {
                     order. Our admin will verify it shortly.
                   </Text>
                 </div>
-                <TextInput
-                  InputType="text"
-                  inputPlaceholder="https://image-hosting.com/your-receipt.jpg"
+                <FileInput
+                  name="proofPaymentUrl"
                   label="Payment Proof URL"
-                  labelStyle="font-bold text-gray-700"
-                  mandatory
-                  inputValue={proofPaymentUrl}
-                  inputOnChange={(e) => setProofPaymentUrl(e.target.value)}
+                  accept="image/*"
+                  onUpload={(file: File) => setFile(file)}
                 />
                 <ButtonBase
                   label={loading ? "Updating..." : "Submit Payment Proof"}
                   variant="primary"
                   fullWidth
                   shape="rounded"
-                  eventClick={handleUpdateProofPaymentURL}
-                  disabled={loading || !proofPaymentUrl}
+                  eventClick={() => handleUpdateProofPaymentURL(file)}
+                  disabled={loading}
                 />
               </>
-            ) : transaction.status === "success" &&
+            ) : transaction.status === "pending" &&
               transaction.proofPaymentUrl !== null ? (
               <div className="flex flex-col gap-3">
                 <Text variant="span" className="text-gray-400 text-sm italic">
@@ -242,16 +254,12 @@ export default function OrderDetail() {
                 >
                   {transaction.proofPaymentUrl}
                 </a>
-                <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-2xl text-center font-bold border border-green-100">
-                  Payment Verified
-                </div>
               </div>
             ) : (
+              transaction.status === "success" &&
               transaction.proofPaymentUrl === null && (
-                <div className="flex flex-col gap-3">
-                  <Text variant="span" className="text-gray-400 text-sm italic">
-                    No payment proof has been submitted
-                  </Text>
+                <div className="mt-4 p-4 bg-green-50 text-green-700 rounded-2xl text-center font-bold border border-green-100">
+                  Payment Verified
                 </div>
               )
             )}

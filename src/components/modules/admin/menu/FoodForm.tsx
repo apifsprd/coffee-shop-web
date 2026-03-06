@@ -1,7 +1,8 @@
 import { ButtonBase } from "@/components/ui/Button";
 import { TextArea, TextInput } from "@/components/ui/form";
-import { Text } from "@/components/ui/Text";
-import Image from "next/image";
+import FileInput from "@/components/ui/input/FileInput";
+import { uploadFile } from "@/lib/api-list/fileUpload";
+import { toast } from "next-toast";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 export default function FoodForm({
@@ -33,6 +34,23 @@ export default function FoodForm({
     ingredients: initialValue?.ingredients || "",
     imageUrl: initialValue?.imageUrl || "",
   });
+
+  const handleUploadImage = async (file: File) => {
+    if (!file) {
+      return toast.error("Please provide an image");
+    }
+    try {
+      const response = await uploadFile({ file });
+      if (response.code === "200" || response.code === 200) {
+        setForm({
+          ...form,
+          imageUrl: response.url,
+        });
+      }
+    } catch (error: unknown) {
+      toast.error("Failed to upload image");
+    }
+  };
 
   useEffect(() => {
     if (initialValue) {
@@ -105,13 +123,18 @@ export default function FoodForm({
         }
         value={form.ingredients}
       />
-      <TextArea
+      {/* <TextArea
         label="Image URL"
         placeholder="ex: https://example.com/image.jpg"
         onChange={(text) => setForm({ ...form, imageUrl: text.target.value })}
         value={form.imageUrl}
+      /> */}
+      <FileInput
+        name="image"
+        label="Upload Image"
+        onUpload={(file: File) => handleUploadImage(file)}
       />
-      {form.imageUrl.length > 0 && (
+      {/* {form.imageUrl.length > 0 && (
         <div className="flex flex-col gap-2">
           <Text variant="span">Preview Image</Text>
           <Image
@@ -122,7 +145,7 @@ export default function FoodForm({
             className="object-cover"
           />
         </div>
-      )}
+      )} */}
 
       <div className="w-full flex flex-col gap-4">
         <ButtonBase
